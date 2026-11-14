@@ -1,0 +1,573 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Simulado Enem 3º Ano</title>
+<meta name="robots" content="noindex">
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap">
+<style>
+/* Layout: capa azul-marinho como a do caderno de questões, depois uma coluna de leitura com o mapa de questões ao lado no computador. Marinho e âmbar vêm da capa do PDF; verde-petróleo marca a Física. */
+:root{
+  --bg:#f1f4f9; --surface:#ffffff; --fg:#14213d; --muted:#56627a; --line:#d8deea;
+  --navy:#14213d; --navy-fg:#ffffff; --amber:#f59e0b; --amber-ink:#14213d; --amber-text:#a85b00; --amber-soft:#fdf1d6;
+  --teal:#0f766e; --on-teal:#ffffff; --teal-band:#0f5f59; --teal-soft:#dcf1ee;
+  --ok:#15703a; --ok-soft:#dcf4e3; --bad:#b3261e; --bad-soft:#fde7e4;
+  --chart1:#2b4a94; --on-chart1:#ffffff; --select:#e8eefc;
+  --font-head:"Space Grotesk",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --font-body:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0b1220; --surface:#141e36; --fg:#e8ecf5; --muted:#9ba7bf; --line:#28365a;
+  --navy:#1a2a52; --navy-fg:#ffffff; --amber:#f5a524; --amber-ink:#14213d; --amber-text:#f5b74a; --amber-soft:#3b2d12;
+  --teal:#35b5a6; --on-teal:#0b1220; --teal-band:#0f5550; --teal-soft:#12332f;
+  --ok:#5ee08a; --ok-soft:#12351f; --bad:#ff8a80; --bad-soft:#3d1b1a;
+  --chart1:#8fa9f2; --on-chart1:#0b1220; --select:#1d2c57; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0b1220; --surface:#141e36; --fg:#e8ecf5; --muted:#9ba7bf; --line:#28365a;
+  --navy:#1a2a52; --navy-fg:#ffffff; --amber:#f5a524; --amber-ink:#14213d; --amber-text:#f5b74a; --amber-soft:#3b2d12;
+  --teal:#35b5a6; --on-teal:#0b1220; --teal-band:#0f5550; --teal-soft:#12332f;
+  --ok:#5ee08a; --ok-soft:#12351f; --bad:#ff8a80; --bad-soft:#3d1b1a;
+  --chart1:#8fa9f2; --on-chart1:#0b1220; --select:#1d2c57; color-scheme:dark}
+
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.55 var(--font-body);padding-block:12px 40px;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+h1,h2,h3{font-family:var(--font-head);margin:0;text-wrap:balance;line-height:1.15}
+h2{font-size:22px}
+h3{font-size:17px}
+p{margin:0 0 .8em}
+a{color:var(--chart1)}
+.muted{color:var(--muted)}
+.wrap{max-width:1080px;margin:0 auto;display:grid;gap:18px}
+#app{display:grid;gap:18px;min-width:0}
+
+.cover{background:var(--navy);color:var(--navy-fg);border-radius:16px;padding:26px clamp(18px,4vw,40px);display:grid;gap:12px}
+.pills{display:flex;flex-wrap:wrap;gap:8px}
+.pill{background:var(--amber);color:var(--amber-ink);font:700 12px/1 var(--font-body);letter-spacing:.08em;text-transform:uppercase;padding:8px 14px;border-radius:99px}
+.pill.test{background:var(--teal);color:var(--on-teal)}
+.cover h1{font-size:clamp(34px,7vw,56px);line-height:1}
+.cover .sub{font:600 clamp(18px,3vw,22px)/1.2 var(--font-head)}
+.rule{width:64px;height:5px;background:var(--amber);border-radius:3px}
+.stats{display:flex;flex-wrap:wrap;gap:8px 28px;margin-top:4px}
+.stats b{display:block;font:700 28px/1 var(--font-head);color:var(--amber)}
+.stats span{font-size:13px;opacity:.85}
+.school{font-size:12px;letter-spacing:.06em;text-transform:uppercase;opacity:.8}
+
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:clamp(16px,3vw,28px);min-width:0}
+.card>h2{margin-bottom:12px}
+.status{border-radius:12px;padding:14px 16px;border:1px solid var(--line);background:var(--surface)}
+.st-open{background:var(--ok-soft);border-color:var(--ok)}
+.st-before{background:var(--amber-soft);border-color:var(--amber)}
+.st-test{background:var(--teal-soft);border-color:var(--teal)}
+.st-closed{background:var(--surface)}
+
+.rules{margin:0;padding:0;list-style:none;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.rules li{display:grid;grid-template-columns:44px minmax(0,1fr);border-top:1px solid var(--line)}
+.rules li:first-child{border-top:0}
+.rules .n{background:var(--amber-soft);display:grid;place-items:center;font:700 18px var(--font-head)}
+.rules .t{padding:12px 16px}
+.rules .rt{display:block;font-weight:700}
+
+.fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-bottom:14px}
+label.fl{display:grid;gap:6px;font-weight:600;font-size:14px}
+input[type=text],textarea{font:16px var(--font-body);padding:12px;border:1.5px solid var(--line);border-radius:10px;background:var(--bg);color:var(--fg);width:100%;min-width:0}
+textarea{resize:vertical;font-size:14px;line-height:1.45}
+input[type=text]:focus-visible,textarea:focus-visible,.btn:focus-visible,.mb:focus-visible,.link:focus-visible,.chip:focus-visible,summary:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
+.err{color:var(--bad);font-weight:600;min-height:1.4em;margin:0 0 8px}
+.btn{font:700 16px var(--font-body);padding:13px 22px;border-radius:10px;border:1.5px solid var(--amber);cursor:pointer;background:var(--amber);color:var(--amber-ink);text-decoration:none;display:inline-block;text-align:center}
+.btn.sec{background:transparent;border-color:var(--line);color:var(--fg)}
+.btn.small{padding:8px 14px;font-size:14px}
+.row{display:flex;flex-wrap:wrap;gap:10px}
+.link{background:none;border:0;padding:6px 0;color:var(--chart1);font:600 14px var(--font-body);cursor:pointer;text-decoration:underline}
+.chip{background:var(--bg);border:1px solid var(--line);color:var(--fg);border-radius:8px;padding:2px 9px;font:600 13px var(--font-body);cursor:pointer;margin:2px}
+
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px 14px;display:grid;gap:8px;box-shadow:0 2px 10px rgb(0 0 0/.07)}
+.r1{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:6px 14px}
+.timer{font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
+.timer.warn{color:var(--bad);font-weight:700}
+.pbar{height:6px;background:var(--line);border-radius:3px;overflow:hidden}
+.pbar i{display:block;height:100%;background:var(--amber);width:0;transition:width .2s}
+.mapd summary{cursor:pointer;font-weight:600;font-size:14px}
+.mapd[open]{max-height:50vh;overflow:auto}
+.mapd .map{margin-top:10px}
+.map{display:grid;grid-template-columns:repeat(auto-fill,minmax(38px,1fr));gap:6px}
+.mb{height:36px;border-radius:8px;border:1px solid var(--line);background:var(--surface);color:var(--fg);font:600 13px var(--font-body);cursor:pointer;font-variant-numeric:tabular-nums}
+.mb.done{background:var(--chart1);color:var(--on-chart1);border-color:var(--chart1)}
+.mb.fis.done{background:var(--teal);color:var(--on-teal);border-color:var(--teal)}
+.side{display:none}
+.exam{display:grid;grid-template-columns:minmax(0,1fr);gap:18px}
+.qs{display:grid;gap:14px;min-width:0}
+@media (min-width:900px){
+  .exam{grid-template-columns:minmax(0,1fr) 250px;align-items:start}
+  .side{display:block;position:sticky;top:calc(env(safe-area-inset-top,0px) + 96px)}
+  .side h3{margin-bottom:10px}
+  .mapd{display:none}
+}
+.who{margin:0;color:var(--muted);font-size:14px}
+.area{border-radius:12px;padding:14px 18px;color:#fff;background:var(--navy);border-left:8px solid var(--amber)}
+.area.fis{background:var(--teal-band)}
+.area h2{font-size:20px;color:#fff}
+.area p{margin:2px 0 0;font-size:14px;opacity:.9}
+.q{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px clamp(14px,3vw,24px);scroll-margin-top:140px;min-width:0}
+.q.answered{border-color:var(--chart1)}
+.qhead{display:flex;flex-wrap:wrap;gap:6px 12px;align-items:center;margin-bottom:10px}
+.qnum{background:var(--navy);color:#fff;font:700 12px var(--font-body);letter-spacing:.05em;text-transform:uppercase;padding:6px 12px;border-radius:8px}
+.qnum.fis{background:var(--teal-band)}
+.qtema{font:600 11px var(--font-body);letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}
+.st{margin-left:auto;font-size:12px;font-weight:600;color:var(--ok)}
+.qtext{margin:0 0 10px;max-width:72ch}
+.opts{display:grid;gap:8px;margin-top:8px}
+.opt{position:relative;display:grid;grid-template-columns:32px minmax(0,1fr);gap:12px;align-items:center;padding:9px 12px;border:1.5px solid var(--line);border-radius:10px;cursor:pointer;background:var(--surface)}
+.opt input{position:absolute;opacity:0;pointer-events:none}
+.ltr{width:30px;height:30px;border-radius:50%;border:1.5px solid var(--muted);display:grid;place-items:center;font:700 13px var(--font-body)}
+.opt:has(input:checked){border-color:var(--chart1);background:var(--select)}
+.opt input:checked+.ltr{background:var(--chart1);border-color:var(--chart1);color:var(--on-chart1)}
+.opt:has(input:focus-visible){outline:3px solid var(--amber);outline-offset:2px}
+.otx{overflow-wrap:anywhere}
+.tw{overflow-x:auto;max-width:100%}
+.qtable{border-collapse:collapse;margin:8px 0;font-size:14px;font-variant-numeric:tabular-nums}
+.qtable th,.qtable td{border:1px solid var(--line);padding:6px 12px;text-align:center}
+.qtable th{background:var(--bg)}
+
+.fig{display:block;width:100%;max-width:520px;height:auto;margin:8px 0 4px}
+.fig text{fill:var(--fg);font:12px var(--font-body)}
+.fig .ax{stroke:var(--muted);stroke-width:1.2}
+.fig .grid{stroke:var(--line);stroke-width:1}
+.fig .col{fill:var(--chart1)}
+.fig .val{font-weight:700}
+.fig .s-line{stroke:var(--fg);fill:none;stroke-width:2.2;stroke-linejoin:round;stroke-linecap:round}
+.fig .s-thin{stroke:var(--fg);fill:none;stroke-width:1.2}
+.fig .s-or{stroke:var(--amber);fill:none;stroke-width:3;stroke-linecap:round}
+.fig .s-dash{stroke:var(--muted);fill:none;stroke-width:1.2;stroke-dasharray:4 4}
+.fig .f-amber{fill:var(--amber)}
+.fig .f-soft{fill:var(--amber-soft);stroke:var(--fg);stroke-width:1.6}
+.fig .f-grass{fill:var(--teal-soft);stroke:var(--fg);stroke-width:1.6}
+.fig .f-area{fill:var(--amber-soft);stroke:var(--fg);stroke-width:2.2;stroke-linejoin:round}
+.fig .f-build{fill:var(--select);stroke:var(--fg);stroke-width:1.6}
+.fig .f-win{fill:var(--surface);stroke:var(--fg);stroke-width:1}
+.fig .t-or{fill:var(--amber-text);font-weight:700}
+.fig .t-b{font-weight:700;font-size:13px}
+
+.hero{display:grid;gap:18px}
+.eyebrow{font:600 12px var(--font-body);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0}
+.score{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 14px}
+.big{font:700 clamp(56px,14vw,88px)/1 var(--font-head);color:var(--chart1)}
+.of{color:var(--muted)}
+.meters{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
+.ml{display:flex;justify-content:space-between;font-weight:600;margin-bottom:6px;font-variant-numeric:tabular-nums}
+.meter{height:10px;background:var(--line);border-radius:5px;overflow:hidden}
+.meter i{display:block;height:100%;background:var(--chart1)}
+.meter.fis i{background:var(--teal)}
+.tbl{width:100%;border-collapse:collapse;font-size:14px;font-variant-numeric:tabular-nums}
+.tbl th{text-align:left;font:600 11px var(--font-body);letter-spacing:.07em;text-transform:uppercase;color:var(--muted);padding:8px 10px;border-bottom:1.5px solid var(--line);white-space:nowrap}
+.tbl td{padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:middle}
+.tbl td.num,.tbl th.num{text-align:right}
+.tbl .meter{min-width:90px}
+.flag{color:var(--amber-text);font-weight:600}
+.receipt{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:13px;margin:6px 0 12px}
+.rv{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:6px}
+.ri{padding:8px 10px;border-radius:8px;font-size:14px;border:1px solid var(--line)}
+.ri.ok{background:var(--ok-soft)}
+.ri.bad{background:var(--bad-soft)}
+.ri.bl{background:var(--amber-soft)}
+.ri.gb{text-align:center;font-weight:600}
+.kpis{display:flex;flex-wrap:wrap;gap:10px 28px;margin:0 0 14px}
+.kpis div{min-width:90px}
+.kpis b{display:block;font:700 26px/1.1 var(--font-head)}
+.kpis span{font-size:13px;color:var(--muted)}
+.foot{font-size:13px;color:var(--muted);display:flex;flex-wrap:wrap;justify-content:space-between;gap:6px 16px}
+@media (prefers-reduced-motion:reduce){.pbar i{transition:none}html{scroll-behavior:auto}}
+</style>
+
+<div class="wrap">
+  <header class="cover">
+    <div class="pills" id="pills"><span class="pill">Simulado · 3º ano</span></div>
+    <h1>Simulado Enem</h1>
+    <div class="rule"></div>
+    <div class="sub">Matemática e Física</div>
+    <div class="stats">
+      <div><b>60</b><span>questões</span></div>
+      <div><b>45</b><span>Matemática</span></div>
+      <div><b>15</b><span>Física</span></div>
+      <div><b>3h20</b><span>tempo sugerido</span></div>
+    </div>
+    <div class="school">Educandário Francisca Ferreira Martins</div>
+  </header>
+  <main id="app"></main>
+  <footer class="foot"><span>Educandário Francisca Ferreira Martins · 3º ano do Ensino Médio · Preparação para o Enem</span></footer>
+</div>
+
+<script>
+(function(){
+"use strict";
+var MODE="alunos", TESTE=MODE==="teste";
+var OPEN=Date.UTC(2026,10,14,15,0,0);   // 14/11/2026 12:00 em Brasília
+var CLOSE=Date.UTC(2026,10,15,1,0,0);   // 14/11/2026 22:00 em Brasília
+var SUGGEST=(3*60+20)*60000;
+
+var TEMAS={rpp:"Razão, proporção e porcentagem",fin:"Matemática financeira",est:"Estatística",esp:"Geometria espacial",fun:"Funções",pla:"Geometria plana",pro:"Probabilidade e análise combinatória",pg:"Progressões aritméticas e geométricas",tri:"Trigonometria",ana:"Geometria analítica",ele:"Eletrodinâmica",ter:"Termologia",ond:"Ondulatória",cin:"Cinemática",din:"Dinâmica e energia",hid:"Hidrostática",opt:"Óptica",mag:"Eletromagnetismo"};
+
+/* ---------- figuras ---------- */
+function barChart(o){
+  var W=480,H=272,L=62,R=466,B=212,T=30,sc=(B-T)/o.ymax,n=o.vals.length,slot=(R-L)/n,bw=Math.min(44,slot*.55);
+  var s='<svg class="fig" viewBox="0 0 '+W+' '+H+'" role="img" aria-label="'+o.label+'">';
+  o.ticks.forEach(function(t){var y=B-t*sc;s+='<line class="grid" x1="'+L+'" x2="'+R+'" y1="'+y+'" y2="'+y+'"/><text x="'+(L-8)+'" y="'+(y+4)+'" text-anchor="end">'+t+'</text>';});
+  s+='<line class="ax" x1="'+L+'" x2="'+L+'" y1="'+(T-6)+'" y2="'+B+'"/><line class="ax" x1="'+L+'" x2="'+R+'" y1="'+B+'" y2="'+B+'"/>';
+  o.vals.forEach(function(v,i){var x=L+i*slot+(slot-bw)/2,h=v*sc;
+    s+='<rect class="col" x="'+x+'" y="'+(B-h)+'" width="'+bw+'" height="'+h+'" rx="2"/><text class="val" x="'+(x+bw/2)+'" y="'+(B-h-6)+'" text-anchor="middle">'+v+'</text><text x="'+(x+bw/2)+'" y="'+(B+18)+'" text-anchor="middle">'+o.labels[i]+'</text>';});
+  s+='<text transform="translate(16 '+((B+T)/2)+') rotate(-90)" text-anchor="middle">'+o.ytitle+'</text>';
+  if(o.xtitle)s+='<text x="'+((L+R)/2)+'" y="'+(H-8)+'" text-anchor="middle">'+o.xtitle+'</text>';
+  return s+'</svg>';
+}
+function zig(x1,y1,x2,y2){
+  var dx=x2-x1,dy=y2-y1,L=Math.hypot(dx,dy),ux=dx/L,uy=dy/L,px=-uy,py=ux,n=6,w=(L-20)/n,p=[[x1,y1],[x1+ux*10,y1+uy*10]];
+  for(var k=0;k<n;k++){var d=10+(k+.5)*w,s=(k%2?1:-1)*9;p.push([x1+ux*d+px*s,y1+uy*d+py*s]);}
+  p.push([x2-ux*10,y2-uy*10],[x2,y2]);
+  return p.map(function(a){return a[0].toFixed(1)+","+a[1].toFixed(1)}).join(" ");
+}
+function money(v){return String(v).replace(/\B(?=(\d{3})+(?!\d))/g,".");}
+var FIGS={
+  f6:function(){return barChart({label:"Gráfico de barras da produção anual: 2020, 80 mil; 2021, 92 mil; 2022, 115 mil; 2023, 138 mil; 2024, 152 mil unidades",vals:[80,92,115,138,152],labels:["2020","2021","2022","2023","2024"],ymax:165,ticks:[0,50,100,150],ytitle:"Produção (mil unidades)"});},
+  f16:function(){return "<div class='tw'><table class='qtable'><tr><th>Nº de filhos</th><th>0</th><th>1</th><th>2</th><th>3</th><th>4</th></tr><tr><th>Nº de famílias</th><td>3</td><td>6</td><td>7</td><td>3</td><td>1</td></tr></table></div>";},
+  f17:function(){return barChart({label:"Gráfico de barras: 0 gols, 1 jogo; 1 gol, 2 jogos; 2 gols, 3 jogos; 3 gols, 2 jogos; 4 gols, 1 jogo; 5 gols, 1 jogo",vals:[1,2,3,2,1,1],labels:["0","1","2","3","4","5"],ymax:3.4,ticks:[0,1,2,3],ytitle:"Número de jogos",xtitle:"Gols marcados no jogo"});},
+  f18:function(){return "<div class='tw'><table class='qtable'><tr><th>Prova</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th></tr><tr><th>Atleta A</th><td>10,1</td><td>10,2</td><td>10,3</td><td>10,2</td><td>10,2</td></tr><tr><th>Atleta B</th><td>9,8</td><td>10,6</td><td>10,0</td><td>10,4</td><td>10,2</td></tr></table></div>";},
+  f29:function(){
+    var L=72,R=452,B=212,T=22,xs=(R-L)/300,ys=(B-T)/6800;
+    function X(v){return L+v*xs} function Y(v){return B-v*ys}
+    var s='<svg class="fig" viewBox="0 0 480 272" role="img" aria-label="Reta do custo total em reais pela quantidade produzida, passando por (0; 2.000) e (100; 3.500)">';
+    for(var t=0;t<=6000;t+=1000){s+='<line class="grid" x1="'+L+'" x2="'+R+'" y1="'+Y(t)+'" y2="'+Y(t)+'"/><text x="'+(L-8)+'" y="'+(Y(t)+4)+'" text-anchor="end">'+money(t)+'</text>';}
+    for(var x=0;x<=300;x+=50){s+='<text x="'+X(x)+'" y="'+(B+18)+'" text-anchor="middle">'+x+'</text>';}
+    s+='<line class="ax" x1="'+L+'" x2="'+L+'" y1="'+(T-4)+'" y2="'+B+'"/><line class="ax" x1="'+L+'" x2="'+R+'" y1="'+B+'" y2="'+B+'"/>';
+    s+='<line class="s-dash" x1="'+L+'" x2="'+X(100)+'" y1="'+Y(3500)+'" y2="'+Y(3500)+'"/><line class="s-dash" x1="'+X(100)+'" x2="'+X(100)+'" y1="'+Y(3500)+'" y2="'+B+'"/>';
+    s+='<line class="s-line" x1="'+X(0)+'" y1="'+Y(2000)+'" x2="'+X(300)+'" y2="'+Y(6500)+'"/>';
+    s+='<circle class="f-amber" cx="'+X(0)+'" cy="'+Y(2000)+'" r="5"/><circle class="f-amber" cx="'+X(100)+'" cy="'+Y(3500)+'" r="5"/>';
+    s+='<text class="t-or" x="'+(X(100)+10)+'" y="'+(Y(3500)+18)+'">(100; 3.500)</text><text class="t-or" x="'+(X(0)+10)+'" y="'+(Y(2000)-9)+'">(0; 2.000)</text>';
+    s+='<text transform="translate(16 '+((B+T)/2)+') rotate(-90)" text-anchor="middle">Custo total C (R$)</text><text x="'+((L+R)/2)+'" y="264" text-anchor="middle">Unidades produzidas (x)</text></svg>';
+    return s;
+  },
+  f32:function(){return '<svg class="fig" viewBox="0 0 300 282" role="img" aria-label="Triângulo retângulo: antena vertical de 24 m, distância de 10 m no solo e cabo ligando o topo ao ponto do solo">'
+    +'<line class="s-thin" x1="40" y1="240" x2="280" y2="240"/>'
+    +'<line class="s-line" style="stroke-width:5" x1="90" y1="30" x2="90" y2="240"/>'
+    +'<line class="s-or" x1="90" y1="30" x2="230" y2="240"/>'
+    +'<polyline class="s-thin" points="90,228 102,228 102,240"/>'
+    +'<line class="s-thin" x1="64" y1="30" x2="64" y2="240"/><polyline class="s-thin" points="59,38 64,30 69,38"/><polyline class="s-thin" points="59,232 64,240 69,232"/>'
+    +'<text class="t-b" transform="translate(52 140) rotate(-90)" text-anchor="middle">24 m</text>'
+    +'<line class="s-thin" x1="90" y1="262" x2="230" y2="262"/><polyline class="s-thin" points="98,257 90,262 98,267"/><polyline class="s-thin" points="222,257 230,262 222,267"/>'
+    +'<text class="t-b" x="160" y="277" text-anchor="middle">10 m</text>'
+    +'<text x="100" y="26">antena</text><text class="t-or" transform="translate(178 128) rotate(56)">cabo</text></svg>';},
+  f33:function(){return '<svg class="fig" style="max-width:340px" viewBox="0 0 300 300" role="img" aria-label="Quadrado de 20 m de lado com um círculo inscrito (canteiro); o restante é grama">'
+    +'<rect class="f-grass" x="40" y="14" width="220" height="220"/>'
+    +'<circle class="f-soft" cx="150" cy="124" r="110"/>'
+    +'<text class="t-b" x="150" y="129" text-anchor="middle">canteiro</text>'
+    +'<text x="46" y="228" style="font-size:11px">grama</text>'
+    +'<line class="s-thin" x1="40" y1="258" x2="260" y2="258"/><polyline class="s-thin" points="48,253 40,258 48,263"/><polyline class="s-thin" points="252,253 260,258 252,263"/>'
+    +'<text class="t-b" x="150" y="282" text-anchor="middle">20 m</text></svg>';},
+  f42:function(){var w='';for(var r=0;r<5;r++){for(var c=0;c<2;c++){w+='<rect class="f-win" x="'+(341+c*20)+'" y="'+(56+r*26)+'" width="12" height="16"/>';}}
+    return '<svg class="fig" viewBox="0 0 420 252" role="img" aria-label="Estudante a 30 m de um prédio, olhos a 1,6 m do chão, medindo o ângulo de 30 graus até o topo">'
+    +'<line class="s-line" x1="20" y1="200" x2="400" y2="200"/>'
+    +'<rect class="f-build" x="330" y="40" width="50" height="160"/>'+w
+    +'<line class="s-thin" x1="60" y1="200" x2="60" y2="154"/><circle cx="60" cy="150" r="5" style="fill:var(--fg)"/>'
+    +'<line class="s-dash" x1="60" y1="154" x2="330" y2="154"/>'
+    +'<line class="s-or" x1="60" y1="154" x2="330" y2="44"/>'
+    +'<text class="t-or" x="104" y="148">30°</text>'
+    +'<text x="68" y="184" style="font-size:12px">1,6 m</text>'
+    +'<text class="t-b" x="355" y="30" text-anchor="middle">h</text>'
+    +'<line class="s-thin" x1="60" y1="222" x2="330" y2="222"/><polyline class="s-thin" points="68,217 60,222 68,227"/><polyline class="s-thin" points="322,217 330,222 322,227"/>'
+    +'<text class="t-b" x="195" y="243" text-anchor="middle">30 m</text></svg>';},
+  f47:function(){return '<svg class="fig" viewBox="0 0 420 250" role="img" aria-label="Circuito: bateria de 12 V, resistor R1 de 2 ohms em série com R2 de 6 ohms e R3 de 3 ohms em paralelo">'
+    +'<polyline class="s-line" points="60,190 60,120"/><line class="s-line" x1="46" y1="108" x2="74" y2="108"/><line class="s-line" style="stroke-width:5" x1="52" y1="120" x2="68" y2="120"/><polyline class="s-line" points="60,108 60,60 110,60"/>'
+    +'<polyline class="s-line" points="'+zig(110,60,190,60)+'"/><polyline class="s-line" points="190,60 340,60 340,95"/>'
+    +'<polyline class="s-line" points="60,190 340,190 340,155"/>'
+    +'<polyline class="s-line" points="260,60 260,95"/><polyline class="s-line" points="'+zig(260,95,260,155)+'"/><polyline class="s-line" points="260,155 260,190"/>'
+    +'<polyline class="s-line" points="'+zig(340,95,340,155)+'"/>'
+    +'<circle cx="260" cy="60" r="4" style="fill:var(--fg)"/><circle cx="260" cy="190" r="4" style="fill:var(--fg)"/>'
+    +'<text class="t-b" x="82" y="106">+</text><text class="t-b" x="8" y="118">12 V</text>'
+    +'<text x="150" y="42" text-anchor="middle">R₁ = 2 Ω</text><text x="244" y="130" text-anchor="end">R₂ = 6 Ω</text><text x="354" y="130">R₃ = 3 Ω</text></svg>';},
+  f54:function(){
+    var L=64,R=452,B=212,T=26,xs=(R-L)/20,ys=(B-T)/24;
+    function X(v){return L+v*xs} function Y(v){return B-v*ys}
+    var s='<svg class="fig" viewBox="0 0 480 272" role="img" aria-label="Gráfico da velocidade pelo tempo: sobe de 0 a 20 m/s em 5 s, fica constante até 15 s e volta a 0 em 20 s">';
+    [0,10,20].forEach(function(t){s+='<line class="grid" x1="'+L+'" x2="'+R+'" y1="'+Y(t)+'" y2="'+Y(t)+'"/><text x="'+(L-8)+'" y="'+(Y(t)+4)+'" text-anchor="end">'+t+'</text>';});
+    [0,5,10,15,20].forEach(function(x){s+='<text x="'+X(x)+'" y="'+(B+18)+'" text-anchor="middle">'+x+'</text>';});
+    s+='<polygon class="f-area" points="'+X(0)+','+Y(0)+' '+X(5)+','+Y(20)+' '+X(15)+','+Y(20)+' '+X(20)+','+Y(0)+'"/>';
+    s+='<line class="ax" x1="'+L+'" x2="'+L+'" y1="'+(T-4)+'" y2="'+B+'"/><line class="ax" x1="'+L+'" x2="'+R+'" y1="'+B+'" y2="'+B+'"/>';
+    s+='<text transform="translate(16 '+((B+T)/2)+') rotate(-90)" text-anchor="middle">Velocidade (m/s)</text><text x="'+((L+R)/2)+'" y="264" text-anchor="middle">Tempo (s)</text></svg>';
+    return s;
+  }
+};
+
+/* ---------- questões ---------- */
+var Q=[];
+function q(n,t,text,opts,fig){Q.push({n:n,t:t,text:text,opts:opts,fig:fig||null});}
+q(1,"rpp","Uma padaria industrial produz pães franceses em fornos elétricos idênticos. Com 3 fornos funcionando durante 4 horas, são produzidos 480 pães. Para atender a uma encomenda de 1.440 pães que precisa ficar pronta em 3 horas, a padaria deverá manter em funcionamento quantos fornos desse tipo?",["6","9","12","15","18"]);
+q(2,"rpp","Em uma promoção de Black Friday, um notebook que custava R$ 3.000,00 recebeu desconto de 25%. Na finalização da compra, o cliente aplicou um cupom que concede 10% de desconto sobre o valor já promocional. Qual foi o preço final pago?",["R$ 1.950,00","R$ 2.025,00","R$ 2.250,00","R$ 2.400,00","R$ 2.700,00"]);
+q(3,"fin","Uma pessoa aplicou R$ 5.000,00 em um fundo que rende 2% ao mês, em regime de juros compostos. Considere (1,02)<sup>3</sup> = 1,061208. O montante dessa aplicação ao final de 3 meses é:",["R$ 5.100,00","R$ 5.200,00","R$ 5.300,00","R$ 5.306,04","R$ 5.600,00"]);
+q(4,"rpp","Em um mapa rodoviário, cuja escala é 1 : 2.500.000, a distância em linha reta entre duas cidades mede 6 cm. Qual é a distância real, em quilômetros, entre essas cidades?",["15 km","150 km","250 km","1.500 km","15.000 km"]);
+q(5,"rpp","Uma lanchonete prepara suco a partir de polpa concentrada, misturando 1 parte de polpa para 4 partes de água. Para encher uma jarra com 2 litros de suco já pronto, quantos mililitros de polpa concentrada são necessários?",["100 mL","200 mL","350 mL","400 mL","500 mL"]);
+q(6,"rpp","O gráfico mostra a produção anual de uma fábrica de eletrodomésticos entre 2020 e 2024. Em relação ao ano imediatamente anterior, o <b>maior aumento percentual</b> de produção ocorreu em:",["2021.","2022.","2023.","2024.","2022 e 2023, que empatam, pois o aumento foi de 23 mil unidades nos dois anos."],"f6");
+q(7,"rpp","Uma torneira mal fechada pinga 20 gotas por minuto, e o volume de cada gota é de 0,25 mL. Se o vazamento não for consertado, qual será o desperdício, em litros, ao final de 30 dias?",["7,2 L","36 L","72 L","216 L","2.160 L"]);
+q(8,"rpp","Um frasco contém 500 mL de uma solução com 20% de álcool (em volume). Para que a concentração de álcool passe a 10%, deve-se acrescentar água ao frasco. Qual é o volume de água, em mL, que deve ser acrescentado?",["500 mL","750 mL","1.000 mL","1.500 mL","2.000 mL"]);
+q(9,"fin","Uma loja anuncia um smartphone por R$ 1.800,00 à vista. No parcelamento, o cliente paga R$ 600,00 de entrada e mais uma parcela única de R$ 1.380,00, um mês depois. Qual é a taxa mensal de juros cobrada sobre o saldo financiado?",["15%","20%","23%","30%","40%"]);
+q(10,"rpp","Em um condomínio residem 240 pessoas. Desse total, 35% são crianças ou adolescentes. Entre as demais pessoas, um quarto tem 60 anos ou mais. Quantos moradores do condomínio têm 60 anos ou mais?",["21","24","30","36","39"]);
+q(11,"rpp","Três bombas idênticas, funcionando juntas, enchem um reservatório em 8 horas. Depois de 2 horas de funcionamento, uma das bombas quebra e as outras duas continuam trabalhando até o reservatório ficar cheio. O tempo total de enchimento, em horas, foi de:",["8","9","10","11","12"]);
+q(12,"rpp","Uma cafeteria mistura dois tipos de grão: o tipo A, que custa R$ 44,00 o quilograma, e o tipo B, que custa R$ 28,00 o quilograma. Para obter 1 kg de uma mistura que custe R$ 32,00, quantos gramas do tipo A devem ser usados?",["250 g","300 g","400 g","500 g","750 g"]);
+q(13,"fin","Um carro bicombustível faz 12 km por litro de gasolina, que custa R$ 6,00 o litro, ou 8 km por litro de etanol, que custa R$ 4,20 o litro. Em uma viagem de 240 km, qual é a economia, em reais, ao abastecer com o combustível mais vantajoso em vez do outro?",["R$ 6,00","R$ 15,00","R$ 21,00","R$ 120,00","R$ 126,00"]);
+q(14,"rpp","Um aplicativo de streaming consome, em média, 3 GB de dados por hora de vídeo em alta qualidade e 0,7 GB por hora em baixa qualidade. Um usuário dispõe de 21 GB de franquia de internet móvel. Quantas horas a mais de vídeo ele consegue assistir se escolher a baixa qualidade em vez da alta?",["3","7","14","21","23"]);
+q(15,"rpp","Em um projeto de reforma, o comprimento de um salão retangular foi ampliado em 20% e a largura foi reduzida em 10%. Em relação à área original, a área do salão:",["aumentou 10%.","aumentou 12%.","não se alterou.","aumentou 8%.","diminuiu 2%."]);
+q(16,"est","Em uma pesquisa com 20 famílias de um bairro, registrou-se o número de filhos por família, conforme a tabela. A média de filhos por família é:",["1,35","1,65","1,85","2,00","2,35"],"f16");
+q(17,"est","O gráfico mostra, para os 10 jogos de um campeonato escolar de futsal, quantos jogos terminaram com cada quantidade de gols marcados. A média, a mediana e a moda do número de gols por jogo são, respectivamente:",["2,0; 2,0; 2,0.","2,3; 2,5; 2,0.","2,5; 2,0; 3,0.","2,3; 2,0; 2,0.","2,5; 2,5; 2,0."],"f17");
+q(18,"est","Dois velocistas disputaram cinco provas de 100 metros, e os tempos, em segundos, estão na tabela. O treinador quer escalar o atleta mais <b>regular</b>, isto é, aquele cujo desempenho varia menos de uma prova para outra. Que atleta deve ser escalado, e por quê?",["O atleta B, pois fez o menor tempo individual (9,8 s).","O atleta B, pois seus tempos têm maior amplitude, o que indica maior regularidade.","O atleta A, pois, com a mesma média de B, seus tempos se afastam menos dessa média (menor desvio padrão).","O atleta A, pois sua média de tempo é menor que a de B.","Nenhum dos dois, pois, tendo médias iguais, eles têm a mesma regularidade."],"f18");
+q(19,"est","Em uma academia, o grupo da manhã tem 10 alunos com média de idade de 30 anos, e o grupo da noite tem 15 alunos com média de idade de 40 anos. A média de idade, em anos, dos 25 alunos dos dois grupos juntos é:",["30","32","34","35","36"]);
+q(20,"est","Em uma pequena empresa, nove funcionários recebem R$ 2.000,00 cada um e o diretor recebe R$ 12.000,00. Para divulgar o salário típico dos funcionários sem distorções, a medida de tendência central mais adequada e o seu valor são:",["a média, R$ 3.000,00, pois utiliza todos os dados da amostra.","a média, R$ 3.000,00, pois é menor que o maior salário.","a moda, R$ 12.000,00, pois é o maior valor registrado.","a mediana, R$ 12.000,00, pois é o valor central.","a mediana, R$ 2.000,00, pois não é afetada pelo salário muito mais alto do diretor."]);
+q(21,"esp","Uma piscina tem formato de paralelepípedo retângulo, com 8 m de comprimento, 4 m de largura e 1,5 m de profundidade. Ela será preenchida até 80% de sua capacidade por uma bomba que fornece 2.000 litros de água por hora. Considere 1 m³ = 1.000 L. O tempo necessário, em horas, será de:",["19,2 h","24 h","38,4 h","48 h","96 h"]);
+q(22,"esp","Uma indústria de laticínios vai substituir suas embalagens cúbicas por outras, também cúbicas, com aresta 20% maior que a das atuais. O volume das novas embalagens será maior que o das atuais em:",["20,0%","44,0%","60,0%","72,8%","120,0%"]);
+q(23,"esp","Um copo descartável tem o formato de um cone, com 4 cm de raio na boca e 9 cm de altura. Adotando π = 3 e sabendo que 1 cm³ = 1 mL, a capacidade do copo, em mL, é:",["48 mL","144 mL","216 mL","432 mL","576 mL"]);
+q(24,"esp","Uma sorveteria vende bolas de sorvete esféricas e cobra um valor proporcional ao volume de sorvete. Uma bola de 3 cm de raio custa R$ 4,00. Quanto deve custar uma bola de 6 cm de raio?",["R$ 4,00","R$ 8,00","R$ 16,00","R$ 24,00","R$ 32,00"]);
+q(25,"esp","Um contêiner tem o interior em forma de paralelepípedo reto-retângulo, com 2,4 m de comprimento, 2 m de largura e 1,6 m de altura. Deseja-se empilhar nele, sem deixar vazios, caixas cúbicas com 20 cm de aresta. O número de caixas que cabem no contêiner é:",["480","960","1.200","1.920","9.600"]);
+q(26,"fun","Duas locadoras de carros oferecem planos diários. A locadora A cobra R$ 60,00 fixos mais R$ 0,50 por quilômetro rodado. A locadora B cobra R$ 90,00 fixos mais R$ 0,20 por quilômetro rodado. Em um dia, alugar na locadora B passa a ser mais vantajoso em relação à A quando a distância percorrida for:",["maior que 40 km.","maior que 60 km.","maior que 80 km.","maior que 90 km.","maior que 100 km."]);
+q(27,"fun","Um goleiro chuta a bola e, t segundos depois, a altura dela, em metros, é dada por h(t) = −5t² + 10t + 1. A altura máxima atingida pela bola, em metros, é:",["6","7","10","11","16"]);
+q(28,"fin","Um investimento rende 10% ao ano em regime de juros compostos. Em quantos anos, aproximadamente, o capital inicial triplica? (Use log 3 = 0,48 e log 1,1 = 0,04.)",["4 anos","8 anos","10 anos","12 anos","16 anos"]);
+q(29,"fun","O gráfico representa o custo total C, em reais, para produzir x unidades de um produto. A relação entre C e x é linear (os pontos pertencem a uma mesma reta). Mantido esse comportamento, o custo para produzir 250 unidades é de:",["R$ 4.500,00","R$ 5.000,00","R$ 5.250,00","R$ 5.500,00","R$ 5.750,00"],"f29");
+q(30,"fun","Em um treino, a trajetória de uma bola chutada é descrita por y = −x²/20 + x, em que x é a distância horizontal percorrida e y é a altura da bola, ambas em metros. A que distância do ponto do chute a bola volta a tocar o solo?",["5 m","10 m","20 m","25 m","40 m"]);
+q(31,"pla","Um piso retangular de 5 m × 4 m será revestido com cerâmicas quadradas de 25 cm de lado, vendidas em caixas com 10 peças cada. Para compensar quebras e recortes, o pedreiro recomenda comprar 10% de peças a mais do que o necessário. O menor número de caixas que deve ser comprado é:",["32","35","36","40","44"]);
+q(32,"pla","Uma antena vertical de 24 m de altura será fixada por um cabo de aço esticado do seu topo até um ponto do solo situado a 10 m da base da antena, como mostra a figura. Desprezando as sobras para amarração, o comprimento do cabo é de:",["24 m","26 m","28 m","34 m","36 m"],"f32");
+q(33,"pla","Uma praça quadrada de 20 m de lado terá um canteiro circular inscrito no quadrado, ocupando a maior área circular possível; o restante da praça será gramado. Adotando π = 3, a área, em m², a ser gramada é:",["100 m²","300 m²","400 m²","700 m²","1.200 m²"],"f33");
+q(34,"pla","A roda de uma bicicleta tem 60 cm de diâmetro. Adotando π = 3, a distância percorrida pela bicicleta, em metros, quando a roda completa 500 voltas, sem deslizar, é de:",["90 m","180 m","450 m","600 m","900 m"]);
+q(35,"pro","Em uma turma com 40 alunos, 24 gostam de Matemática, 20 gostam de Física e 8 gostam das duas disciplinas. Escolhendo-se um aluno ao acaso, a probabilidade de que ele não goste de nenhuma das duas é:",["10%","20%","30%","40%","90%"]);
+q(36,"pro","Uma comissão de 3 pessoas será formada entre 5 homens e 4 mulheres, com a exigência de que tenha pelo menos uma mulher. O número de comissões possíveis é:",["64","74","84","90","126"]);
+q(37,"pro","Em um jogo de tabuleiro, um jogador só avança uma casa extra se, ao lançar dois dados comuns e equilibrados, a soma das faces voltadas para cima for igual a 8. A probabilidade de ele avançar a casa extra em uma jogada é:",["1/12","1/9","5/36","1/6","1/4"]);
+q(38,"pro","Em um torneio de futebol com 8 times, todos jogam entre si em dois turnos (turno e returno), de modo que cada par de times se enfrenta duas vezes. O número total de jogos do torneio é:",["28","48","56","64","112"]);
+q(39,"pg","Para se preparar para uma corrida, um atleta corre 2 km no primeiro dia de treino e, a cada dia seguinte, aumenta em 0,5 km a distância percorrida no dia anterior. Ao fim de 10 dias de treino, o total percorrido, em km, é de:",["30,0","35,0","40,0","42,5","65,0"]);
+q(40,"pg","Uma notícia falsa é compartilhada em uma rede social do seguinte modo: na 1ª rodada, uma pessoa a publica; em cada rodada seguinte, cada pessoa que a recebeu na rodada anterior a repassa para três novas pessoas, que ainda não a tinham visto. Ao final da 5ª rodada, o total de pessoas que viram a notícia, incluindo a primeira, é de:",["121","135","243","364","1.024"]);
+q(41,"pg","Uma pessoa decide juntar dinheiro para uma viagem: deposita R$ 100,00 no primeiro mês e, a cada mês seguinte, deposita R$ 20,00 a mais do que no mês anterior. O menor número de meses para que o total depositado chegue a R$ 1.900,00 ou mais é:",["8","9","10","11","12"]);
+q(42,"tri","Para estimar a altura de um prédio, uma estudante, cujos olhos estão a 1,6 m do chão, afasta-se 30 m da base do prédio e mede, com um teodolito, o ângulo de 30° entre a horizontal e o topo, conforme a figura (fora de escala). Dado: tg 30° ≈ 0,58. A altura estimada do prédio, em metros, é:",["17,4","19,0","20,6","30,0","51,7"],"f42");
+q(43,"tri","A altura da maré em um porto, em metros, t horas após o início das medições, é modelada por h(t) = 3 + 2 · sen(πt/6). O intervalo de tempo, em horas, entre duas marés altas consecutivas é de:",["2 h","3 h","4 h","6 h","12 h"]);
+q(44,"ana","Em um mapa, cada unidade dos eixos cartesianos corresponde a 10 km. Duas cidades estão nos pontos A(1, 2) e B(7, 10). A distância em linha reta entre elas é de:",["60 km","80 km","100 km","140 km","160 km"]);
+q(45,"ana","O traçado de uma ciclovia retilínea é descrito, em um sistema de coordenadas com unidade de 1 km, pela equação 3x + 4y = 12. A ciclovia e os eixos coordenados delimitam uma região triangular. A área dessa região, em km², é:",["3 km²","4 km²","6 km²","7 km²","12 km²"]);
+q(46,"ele","O chuveiro elétrico de uma residência tem potência de 6.000 W e é usado, em média, 40 minutos por dia. Sabendo que a tarifa de energia é de R$ 0,80 por kWh, o custo mensal (30 dias) da energia consumida apenas por esse chuveiro é:",["R$ 96,00","R$ 120,00","R$ 144,00","R$ 192,00","R$ 240,00"]);
+q(47,"ele","No circuito esquematizado, uma bateria ideal de 12 V alimenta um resistor R<sub>1</sub> = 2 Ω, ligado em série com dois resistores em paralelo, R<sub>2</sub> = 6 Ω e R<sub>3</sub> = 3 Ω. A intensidade da corrente elétrica que atravessa o resistor R<sub>2</sub>, em ampères, é:",["0,5 A","1,0 A","1,5 A","2,0 A","3,0 A"],"f47");
+q(48,"ele","Uma tomada de 110 V é protegida por um disjuntor de 20 A. Os aparelhos disponíveis têm as seguintes potências: ferro de passar (1.100 W), forno micro-ondas (1.200 W), secador de cabelo (1.000 W), televisão (200 W) e um conjunto de lâmpadas (150 W). Qual dos conjuntos de aparelhos abaixo pode funcionar ao mesmo tempo, ligado nessa tomada, sem que o disjuntor desarme?",["Ferro de passar e forno micro-ondas.","Micro-ondas, secador de cabelo e televisão.","Ferro de passar, secador de cabelo e lâmpadas.","Ferro de passar, micro-ondas e televisão.","Ferro de passar e secador de cabelo."]);
+q(49,"ter","Um aquecedor elétrico de potência 2.000 W é usado para aquecer 2 litros de água de 25 °C a 75 °C, sem perdas de energia. Dados: densidade da água = 1 kg/L e calor específico da água = 4,2 J/(g · °C). O tempo de funcionamento do aquecedor, em minutos, é de:",["3,5 min","7,0 min","14,0 min","21,0 min","35,0 min"]);
+q(50,"ter","Ao acordar em um dia frio, uma pessoa pisa descalça no tapete e depois no piso de cerâmica do quarto. Embora ambos estejam em equilíbrio térmico com o ambiente (mesma temperatura), ela sente a cerâmica mais fria do que o tapete. Essa sensação ocorre porque:",["a cerâmica tem maior condutividade térmica que o tapete e, por isso, retira calor do pé com mais rapidez.","a cerâmica tem temperatura menor que o tapete, pois o tapete é aquecido pela radiação do corpo.","o tapete armazena mais frio do que a cerâmica e o transfere para o pé.","a cerâmica irradia mais calor para o ambiente do que o tapete.","o tapete é um isolante perfeito e não troca calor com o pé."]);
+q(51,"ter","Em um recipiente termicamente isolado há 400 g de água a 30 °C. Deseja-se resfriá-la até 0 °C adicionando gelo a 0 °C, de modo que todo o gelo derreta e a mistura final fique a 0 °C. Dados: calor específico da água = 1 cal/(g · °C) e calor latente de fusão do gelo = 80 cal/g. A massa de gelo necessária, em gramas, é:",["75 g","100 g","150 g","240 g","400 g"]);
+q(52,"ond","Um navio emite um pulso de sonar e recebe o eco vindo do fundo do mar 0,8 s depois. Sabendo que o som se propaga na água do mar com velocidade de 1.500 m/s, a profundidade do local é de:",["75 m","150 m","300 m","500 m","600 m"]);
+q(53,"ond","Uma emissora de rádio FM transmite na frequência de 100 MHz. As ondas de rádio são ondas eletromagnéticas que se propagam no ar com velocidade de, aproximadamente, 3 × 10<sup>8</sup> m/s. O comprimento de onda dessa transmissão, em metros, é de:",["0,3 m","3 m","30 m","300 m","3.000 m"]);
+q(54,"cin","O gráfico representa a velocidade de um carro de teste, em função do tempo, ao longo de 20 s em uma pista reta. A distância percorrida pelo carro nesse intervalo, em metros, é de:",["100 m","200 m","300 m","350 m","400 m"],"f54");
+q(55,"cin","Em uma rodovia retilínea, o carro A trafega a 72 km/h. Quatrocentos metros atrás dele, o carro B trafega, no mesmo sentido, a 108 km/h. Supondo velocidades constantes, B alcança A depois de:",["10 s","20 s","40 s","80 s","100 s"]);
+q(56,"din","Um elevador com passageiros tem massa total de 800 kg e sobe com aceleração constante de 1 m/s². Adotando g = 10 m/s², a força de tração exercida pelo cabo sobre o elevador é de:",["6.400 N","7.200 N","8.000 N","8.800 N","9.600 N"]);
+q(57,"din","Uma usina hidrelétrica recebe uma vazão de 100 m³ de água por segundo, que cai de uma altura de 50 m. O rendimento total da usina é de 80%. Dados: densidade da água = 1.000 kg/m³ e g = 10 m/s². A potência elétrica gerada, em megawatts (MW), é de:",["4 MW","40 MW","50 MW","80 MW","400 MW"]);
+q(58,"hid","Um mergulhador desce a 30 m de profundidade em um lago. Sabendo que a pressão atmosférica na superfície é de 1 × 10<sup>5</sup> Pa, a densidade da água é 1.000 kg/m³ e g = 10 m/s², a pressão total sobre o mergulhador nessa profundidade é de:",["1 × 10<sup>5</sup> Pa","2 × 10<sup>5</sup> Pa","3 × 10<sup>5</sup> Pa","4 × 10<sup>5</sup> Pa","3 × 10<sup>6</sup> Pa"]);
+q(59,"opt","Uma câmera simples utiliza uma lente convergente de distância focal 20 cm. Um objeto está a 30 cm da lente. A que distância da lente deve ficar o sensor para que a imagem do objeto seja nítida? (Use 1/f = 1/p + 1/p'.)",["12 cm","20 cm","30 cm","50 cm","60 cm"]);
+q(60,"mag","O carregador de um celular reduz a tensão da rede, de 120 V, para 12 V por meio de um transformador ideal. Se o enrolamento secundário possui 100 espiras, o número de espiras do enrolamento primário é de:",["10","100","120","1.000","1.200"]);
+
+/* ---------- utilidades ---------- */
+function $(s,r){return (r||document).querySelector(s)}
+function $$(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))}
+function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
+function pad(n){return (n<10?"0":"")+n}
+function hms(ms){ms=Math.max(0,Math.floor(ms/1000));return pad(Math.floor(ms/3600))+":"+pad(Math.floor(ms/60)%60)+":"+pad(ms%60)}
+function dur(ms){ms=Math.max(0,Math.floor(ms/1000));var d=Math.floor(ms/86400),h=Math.floor(ms/3600)%24,m=Math.floor(ms/60)%60,s=ms%60;return d?d+"d "+h+"h "+m+"min":h?h+"h "+pad(m)+"min "+pad(s)+"s":m+"min "+pad(s)+"s"}
+function fmtDate(ms){try{return new Date(ms).toLocaleString("pt-BR",{timeZone:"America/Sao_Paulo",day:"2-digit",month:"2-digit",year:"numeric",hour:"2-digit",minute:"2-digit"}).replace(",","")}catch(e){return new Date(ms).toISOString()}}
+function dec(v,d){return v.toFixed(d==null?1:d).replace(".",",")}
+function clean(s){return String(s).replace(/[|\r\n]+/g," ").replace(/\s+/g," ").trim()}
+function sig(s){var h=0x811c9dc5,x=s+"|enem3a";for(var i=0;i<x.length;i++){h^=x.charCodeAt(i);h=Math.imul(h,0x01000193)>>>0}return h.toString(36)}
+function phase(t){return TESTE?"open":(t<OPEN?"before":(t<CLOSE?"open":"closed"))}
+function revealOK(t){return TESTE||t>=CLOSE}
+
+var SK="simulado-enem-3ano-v2-"+MODE;
+function load(){try{return JSON.parse(localStorage.getItem(SK))}catch(e){return null}}
+function save(){try{localStorage.setItem(SK,JSON.stringify(S))}catch(e){}}
+var S=load()||{nome:"",turma:"",ans:{},started:0,done:null};
+var confirming=false,lastPh="",lastRv=null;
+
+function ansStr(){var s="";for(var i=1;i<=60;i++)s+=S.ans[i]||"-";return s}
+function grade(str){
+  var r={total:0,mat:0,fis:0,tema:{},per:[]};
+  for(var k in TEMAS)r.tema[k]=[0,0];
+  Q.forEach(function(x,i){var ok=str.charAt(i)===GAB.charAt(i);r.per.push(ok);r.tema[x.t][1]++;if(ok){r.total++;r.tema[x.t][0]++;if(i<45)r.mat++;else r.fis++}});
+  return r;
+}
+var GAB=null,gabLoading=false,sending=false,sendErr="",lastTry=0;
+function loadGab(){
+  if(GAB||gabLoading||!revealOK(Date.now()))return;
+  gabLoading=true;
+  fetch("/api/gabarito").then(function(r){return r.ok?r.json():null}).then(function(j){
+    gabLoading=false;if(j&&j.key){GAB=j.key;render()}
+  }).catch(function(){gabLoading=false});
+}
+
+/* ---------- telas ---------- */
+var app=$("#app");
+if(TESTE)$("#pills").insertAdjacentHTML("beforeend",'<span class="pill test">Modo de teste</span>');
+
+function view(){return S.done?"result":(S.started?"exam":"start")}
+function render(){
+  var v=view(),t=Date.now();
+  lastPh=phase(t);lastRv=revealOK(t);
+  app.innerHTML=v==="result"?resultHTML(t):v==="exam"?examHTML():startHTML(t);
+  
+  if(v==="exam"){refreshProgress()}
+  tick();loadGab();
+}
+
+function rulesHTML(){
+  var r=[["Estrutura","O caderno tem <b>60 questões</b>: 45 de Matemática e suas Tecnologias (1 a 45) e 15 de Física (46 a 60)."],
+   ["Alternativas","Cada questão tem cinco alternativas (A a E) e <b>apenas uma está correta</b>. Toque na alternativa para marcar; você pode mudar a resposta até enviar."],
+   ["Tempo","Duração sugerida: <b>3 horas e 20 minutos</b> (cerca de 3 min 20 s por questão). O relógio na tela é só uma referência. Sem pressa em uma única questão."],
+   ["Sem calculadora","Não use calculadora nem consulta. Quando necessário, o enunciado informa dados como π, logaritmos e tabelas trigonométricas."],
+   ["Constantes","Quando não houver outra informação: g = 10 m/s²; velocidade da luz c = 3 × 10<sup>8</sup> m/s; calor específico da água = 1 cal/(g · °C); 1 cal = 4,2 J; densidade da água = 1.000 kg/m³."],
+   ["Estratégia","Faça primeiro as questões que você domina e deixe as difíceis para depois. O mapa de questões mostra o que falta responder."],
+   ["Envio","Ao terminar, toque em <b>Enviar prova</b>. Suas respostas vão direto para o professor e você verá sua nota na hora."]];
+  return '<ol class="rules">'+r.map(function(x,i){return '<li><span class="n">'+(i+1)+'</span><span class="t"><strong class="rt">'+x[0]+'</strong>'+x[1]+'</span></li>'}).join("")+'</ol>';
+}
+function gabaritoHTML(){
+  if(!GAB)return '<p class="muted">Carregando gabarito…</p>';
+  var h='<div class="rv">';
+  for(var i=0;i<60;i++)h+='<div class="ri gb">'+pad(i+1)+' · '+GAB.charAt(i)+'</div>';
+  return h+'</div>';
+}
+function startHTML(t){
+  var ph=phase(t),st="",form="";
+  if(TESTE)st='<div class="status st-test"><b>Modo de teste.</b> Faça a prova inteira como um aluno. A nota e o gabarito aparecem na hora e nada é enviado ao professor.</div>';
+  else if(ph==="before")st='<div class="status st-before"><b>A prova abre em 14/11 às 12h (horário de Brasília).</b> Faltam <span id="cd"></span>. Enquanto isso, leia as instruções abaixo.</div>';
+  else if(ph==="open")st='<div class="status st-open"><b>Prova aberta até as 22h de 14/11.</b> Envie antes do encerramento. Se a página estiver aberta às 22h, as respostas marcadas são enviadas automaticamente.</div>';
+  else st='<div class="status st-closed"><b>Prova encerrada.</b> Ela ficou aberta em 14/11, das 12h às 22h. O gabarito está no fim da página.</div>';
+  if(ph==="open"){
+    form='<form class="card" id="idform" novalidate><h2>Identificação do estudante</h2><div class="fields">'
+     +'<label class="fl">Nome completo<input type="text" id="nome" autocomplete="name" maxlength="80" value="'+esc(S.nome||(TESTE?"Aluno Teste":""))+'"></label>'
+     +'<label class="fl">Turma<input type="text" id="turma" maxlength="30" placeholder="Ex.: 3º A" value="'+esc(S.turma||(TESTE?"3º A":""))+'"></label></div>'
+     +'<p class="err" id="err" role="alert"></p><button class="btn" type="submit">Iniciar prova</button></form>';
+  }
+  return st+form+'<section class="card"><h2>Instruções para a prova</h2>'+rulesHTML()+'</section>'
+    +(ph==="closed"?'<section class="card"><h2>Gabarito</h2>'+gabaritoHTML()+'</section>':'');
+}
+
+function mapHTML(){
+  var h='<div class="map">';
+  for(var n=1;n<=60;n++)h+='<button type="button" class="mb'+(n>45?" fis":"")+'" data-act="jump" data-n="'+n+'" aria-label="Ir para a questão '+n+'">'+n+'</button>';
+  return h+'</div><p class="muted" style="font-size:13px;margin:10px 0 0">Número preenchido = questão respondida.</p>';
+}
+function areaHTML(k){
+  return k==="mat"?'<div class="area"><h2>Matemática e suas Tecnologias</h2><p>Questões 1 a 45 · Use o papel de rascunho</p></div>'
+                  :'<div class="area fis"><h2>Física · Ciências da Natureza</h2><p>Questões 46 a 60 · Adote g = 10 m/s² quando não houver outra informação</p></div>';
+}
+function qHTML(x){
+  var fis=x.n>45,a=S.ans[x.n];
+  return '<article class="q'+(a?" answered":"")+'" id="q-'+x.n+'" data-n="'+x.n+'">'
+   +'<div class="qhead"><span class="qnum'+(fis?" fis":"")+'">Questão '+pad(x.n)+'</span><span class="qtema">'+TEMAS[x.t]+'</span><span class="st"></span></div>'
+   +'<p class="qtext">'+x.text+'</p>'+(x.fig?FIGS[x.fig]():"")
+   +'<div class="opts" role="radiogroup" aria-label="Alternativas da questão '+x.n+'">'
+   +x.opts.map(function(o,i){var L="ABCDE".charAt(i);return '<label class="opt"><input type="radio" name="q'+x.n+'" value="'+L+'" data-n="'+x.n+'"'+(a===L?" checked":"")+'><span class="ltr">'+L+'</span><span class="otx">'+o+'</span></label>'}).join("")
+   +'</div><button type="button" class="link" data-act="clear" data-n="'+x.n+'"'+(a?"":" hidden")+'>Limpar resposta</button></article>';
+}
+function examHTML(){
+  var h='<div class="bar"><div class="r1"><strong id="prog"></strong><span class="timer" id="clock"></span><button type="button" class="btn small" data-act="gofinal">Ir para o envio</button></div><div class="pbar" aria-hidden="true"><i id="pbar"></i></div>'
+   +'<details class="mapd"><summary>Mapa de questões</summary>'+mapHTML()+'</details></div>'
+   +'<div class="exam"><div class="qs"><p class="who">Prova de <b>'+esc(S.nome)+'</b> · '+esc(S.turma)+(TESTE?" · modo de teste":"")+'</p>';
+  Q.forEach(function(x){if(x.n===1)h+=areaHTML("mat");if(x.n===46)h+=areaHTML("fis");h+=qHTML(x)});
+  h+='<section class="card" id="final"></section></div><aside class="side"><h3>Mapa de questões</h3>'+mapHTML()+'</aside></div>';
+  return h;
+}
+function refreshProgress(){
+  var c=Object.keys(S.ans).length;
+  var p=$("#prog");if(p)p.textContent=c+" de 60 respondidas";
+  var b=$("#pbar");if(b)b.style.width=(c/60*100)+"%";
+  $$(".mb").forEach(function(el){el.classList.toggle("done",!!S.ans[el.getAttribute("data-n")])});
+  $$(".q").forEach(function(el){var n=el.getAttribute("data-n"),a=S.ans[n];el.classList.toggle("answered",!!a);$(".st",el).textContent=a?"✓ Respondida":"";$("[data-act=clear]",el).hidden=!a});
+  if(!confirming)renderFinal();
+}
+function renderFinal(){
+  var el=$("#final");if(!el)return;
+  var miss=[];for(var n=1;n<=60;n++)if(!S.ans[n])miss.push(n);
+  var h='<h2>Finalizar prova</h2>';
+  if(!confirming){
+    h+=miss.length?'<p>Você respondeu <b>'+(60-miss.length)+'</b> de 60 questões. Sem resposta: '+miss.map(function(n){return '<button type="button" class="chip" data-act="jump" data-n="'+n+'">'+n+'</button>'}).join("")+'</p>':'<p>Todas as 60 questões estão respondidas.</p>';
+    h+='<p class="muted">Depois de enviar, não é possível alterar as respostas.</p><button type="button" class="btn" data-act="ask">Enviar prova</button>';
+  }else{
+    h+=(sendErr?'<p class="err" role="alert">'+esc(sendErr)+'</p>':'')+'<p><b>Confirmar envio?</b> '+(miss.length?miss.length+(miss.length>1?" questões ficarão":" questão ficará")+' em branco. ':'')+'Não será possível alterar depois.</p><div class="row"><button type="button" class="btn sec" data-act="cancel">Voltar à prova</button><button type="button" class="btn" data-act="send">Sim, enviar agora</button></div>';
+  }
+  el.innerHTML=h;
+}
+function meter(v,tot,fis){return '<div class="meter'+(fis?" fis":"")+'"><i style="width:'+(tot?Math.round(v/tot*100):0)+'%"></i></div>'}
+function reviewHTML(str){
+  var h='<div class="rv">';
+  Q.forEach(function(x,i){var m=str.charAt(i),c=GAB.charAt(i),cls,txt;
+    if(m===c){cls="ok";txt="marcou "+m+" ✓"}else if(m==="-"){cls="bl";txt="em branco · correta "+c}else{cls="bad";txt="marcou "+m+" ✗ · correta "+c}
+    h+='<div class="ri '+cls+'"><b>'+pad(i+1)+'</b> '+txt+'</div>'});
+  return h+'</div>';
+}
+function resultHTML(t){
+  var g=S.done.res,rv=revealOK(t)&&!!GAB,pct=Math.round(g.total/60*100),keys=Object.keys(TEMAS);
+  var h='<section class="card hero"><p class="eyebrow">Resultado de '+esc(S.nome)+' · '+esc(S.turma)+'</p>'
+   +'<div class="score"><span class="big">'+g.total+'</span><span class="of">de 60 questões · '+pct+'% de acertos</span></div>'
+   +'<div class="meters"><div><div class="ml"><span>Matemática</span><span>'+g.mat+'/45</span></div>'+meter(g.mat,45,false)+'</div><div><div class="ml"><span>Física</span><span>'+g.fis+'/15</span></div>'+meter(g.fis,15,true)+'</div></div></section>';
+  h+='<section class="card"><h2>Prova enviada ✓</h2><p>Suas respostas foram registradas e o professor já pode ver o seu resultado. <b>Não é preciso enviar mais nada.</b></p><p class="muted">Enviado em '+fmtDate(S.done.at)+'</p></section>';
+  h+='<section class="card"><h2>Desempenho por tema</h2><div class="tw"><table class="tbl"><thead><tr><th>Tema</th><th class="num">Acertos</th><th></th></tr></thead><tbody>';
+  keys.forEach(function(k,i){var a=g.tema[k];h+='<tr><td>'+(i<10?"Mat · ":"Fís · ")+TEMAS[k]+'</td><td class="num">'+a[0]+'/'+a[1]+'</td><td>'+meter(a[0],a[1],i>=10)+'</td></tr>'});
+  h+='</tbody></table></div></section>';
+  h+=rv?'<section class="card"><h2>Gabarito e correção</h2><p class="muted">Compare com o que você marcou.</p>'+reviewHTML(S.done.ans)+'</section>'
+       :'<section class="card"><h2>Gabarito</h2><p>O gabarito é liberado depois do encerramento, às 22h de 14/11. Volte a este link depois desse horário para ver quais questões você acertou.</p></section>';
+  return h;
+}
+
+/* ---------- ações ---------- */
+function submitExam(auto){
+  if(sending)return;
+  if(auto&&Date.now()-lastTry<15000)return;
+  lastTry=Date.now();sending=true;sendErr="";
+  var payload={nome:S.nome,turma:S.turma,ans:ansStr(),started:S.started,auto:!!auto};
+  fetch("/api/submit",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload)})
+   .then(function(r){return r.json().then(function(j){return {ok:r.ok,j:j}})})
+   .then(function(x){
+     sending=false;
+     if(!x.ok)throw new Error((x.j&&x.j.error)||"Erro ao enviar.");
+     S.done={at:x.j.at,ans:payload.ans,res:x.j.res};confirming=false;save();render();window.scrollTo(0,0);
+   })
+   .catch(function(e){
+     sending=false;confirming=true;
+     sendErr=(e&&e.message&&e.message!=="Failed to fetch"?e.message:"Sem conexão. Verifique a internet e tente de novo.")+" Suas respostas continuam salvas neste aparelho.";
+     renderFinal();
+   });
+}
+app.addEventListener("submit",function(e){
+  e.preventDefault();
+  if(e.target.id!=="idform")return;
+  var nome=clean($("#nome").value),turma=clean($("#turma").value),err=$("#err");
+  if(nome.length<5||nome.indexOf(" ")<0){err.textContent="Digite o nome completo (nome e sobrenome).";return}
+  if(!turma){err.textContent="Digite a turma.";return}
+  if(!TESTE&&phase(Date.now())!=="open"){render();return}
+  S.nome=nome;S.turma=turma;S.started=Date.now();S.ans={};S.done=null;save();render();window.scrollTo(0,0);
+});
+app.addEventListener("change",function(e){
+  var t=e.target;
+  if(t.matches&&t.matches("input[type=radio][data-n]")){S.ans[t.getAttribute("data-n")]=t.value;save();refreshProgress()}
+});
+app.addEventListener("click",function(e){
+  var b=e.target.closest("[data-act]");if(!b)return;
+  var a=b.getAttribute("data-act"),n=b.getAttribute("data-n");
+  if(a==="jump"){var el=document.getElementById("q-"+n);if(el)el.scrollIntoView({behavior:"smooth",block:"start"});var d=$(".mapd");if(d)d.open=false}
+  else if(a==="clear"){delete S.ans[n];save();var r=$("input[name=q"+n+"]:checked");if(r)r.checked=false;refreshProgress()}
+  else if(a==="gofinal"){var f=$("#final");if(f)f.scrollIntoView({behavior:"smooth",block:"start"})}
+  else if(a==="ask"){confirming=true;renderFinal()}
+  else if(a==="cancel"){confirming=false;renderFinal()}
+  else if(a==="send"){b.disabled=true;b.textContent="Enviando…";submitExam(false)}
+  else if(a==="retry"){S={nome:S.nome,turma:S.turma,ans:{},started:0,done:null};save();render();window.scrollTo(0,0)}
+});
+
+function tick(){
+  var t=Date.now(),ph=phase(t),rv=revealOK(t);
+  if(ph!==lastPh||rv!==lastRv){render();return}
+  var cd=$("#cd");if(cd)cd.textContent=dur(OPEN-t);
+  var ck=$("#clock");
+  if(ck&&S.started&&!S.done){
+    var txt="Tempo "+hms(t-S.started)+" · sugerido 3h20",warn=false;
+    if(!TESTE){var left=CLOSE-t;txt+=" · encerra em "+dur(left);if(left<30*60000)warn=true}
+    ck.textContent=txt;ck.classList.toggle("warn",warn);
+  }
+  if(!TESTE&&S.started&&!S.done&&t>=CLOSE)submitExam(true);
+}
+setInterval(tick,1000);
+render();
+})();
+</script>
+
+</body></html>

@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Painel do Professor · Simulado Enem</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap">
+<style>
+:root{--bg:#f1f4f9;--surface:#fff;--fg:#14213d;--muted:#56627a;--line:#d8deea;--navy:#14213d;--amber:#f59e0b;--amber-ink:#14213d;--amber-text:#a85b00;--amber-soft:#fdf1d6;--teal:#0f766e;--ok:#15703a;--ok-soft:#dcf4e3;--bad:#b3261e;--bad-soft:#fde7e4;--blue:#2b4a94;--font-head:"Space Grotesk",system-ui,sans-serif;--font-body:"Inter",system-ui,sans-serif}
+@media (prefers-color-scheme:dark){:root{--bg:#0b1220;--surface:#141e36;--fg:#e8ecf5;--muted:#9ba7bf;--line:#28365a;--navy:#1a2a52;--amber-text:#f5b74a;--amber-soft:#3b2d12;--teal:#35b5a6;--ok:#5ee08a;--ok-soft:#12351f;--bad:#ff8a80;--bad-soft:#3d1b1a;--blue:#8fa9f2;color-scheme:dark}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.5 var(--font-body);padding:12px 16px 40px}
+h1,h2,h3{font-family:var(--font-head);margin:0;line-height:1.15}
+h2{font-size:21px;margin-bottom:12px}h3{font-size:16px;margin-bottom:8px}
+.wrap{max-width:1100px;margin:0 auto;display:grid;gap:16px}
+.top{background:var(--navy);color:#fff;border-radius:14px;padding:18px 22px;display:flex;flex-wrap:wrap;gap:10px 20px;align-items:center;justify-content:space-between;border-left:8px solid var(--amber)}
+.top h1{font-size:24px}.top small{opacity:.8}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:clamp(14px,3vw,24px);min-width:0}
+.muted{color:var(--muted)}
+input,select{font:15px var(--font-body);padding:10px 12px;border:1.5px solid var(--line);border-radius:10px;background:var(--bg);color:var(--fg);min-width:0}
+input:focus-visible,select:focus-visible,button:focus-visible,tr[data-id]:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
+.btn{font:700 14px var(--font-body);padding:10px 16px;border-radius:10px;border:1.5px solid var(--amber);background:var(--amber);color:var(--amber-ink);cursor:pointer}
+.btn.sec{background:transparent;border-color:var(--line);color:var(--fg)}
+.btn.danger{background:transparent;border-color:var(--bad);color:var(--bad)}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.err{color:var(--bad);font-weight:600;min-height:1.4em;margin:8px 0 0}
+.kpis{display:flex;flex-wrap:wrap;gap:12px 32px}
+.kpis b{display:block;font:700 28px/1.1 var(--font-head)}.kpis span{font-size:13px;color:var(--muted)}
+.tw{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:14px;font-variant-numeric:tabular-nums}
+th{text-align:left;font:600 11px var(--font-body);letter-spacing:.07em;text-transform:uppercase;color:var(--muted);padding:8px 10px;border-bottom:1.5px solid var(--line);white-space:nowrap;cursor:pointer;user-select:none}
+td{padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:middle}
+.num{text-align:right}
+tr[data-id]{cursor:pointer}tr[data-id]:hover td{background:var(--bg)}
+.meter{height:9px;background:var(--line);border-radius:5px;overflow:hidden;min-width:80px}
+.meter i{display:block;height:100%;background:var(--blue)}.meter.fis i{background:var(--teal)}.meter.low i{background:var(--bad)}
+.flag{color:var(--amber-text);font-weight:600}
+.rv{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:6px}
+.ri{padding:7px 10px;border-radius:8px;font-size:13px;border:1px solid var(--line)}
+.ri.ok{background:var(--ok-soft)}.ri.bad{background:var(--bad-soft)}.ri.bl{background:var(--amber-soft)}
+.detail{border:2px solid var(--amber)}
+.pill{display:inline-block;background:var(--bad-soft);color:var(--bad);border-radius:99px;padding:2px 10px;font-size:12px;font-weight:600;margin:2px 4px 2px 0}
+#login{max-width:420px;margin:60px auto}
+[hidden]{display:none!important}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div id="login" class="card">
+    <h2>Painel do professor</h2>
+    <p class="muted">Acesso restrito. Digite a senha do professor.</p>
+    <form id="lf" class="row" style="flex-wrap:nowrap">
+      <input type="password" id="pw" placeholder="Senha" autocomplete="current-password" style="flex:1">
+      <button class="btn" type="submit">Entrar</button>
+    </form>
+    <p class="err" id="lerr" role="alert"></p>
+  </div>
+
+  <div id="panel" hidden>
+    <div class="top">
+      <div><h1>Painel do professor</h1><small>Simulado Enem · 3º ano · Matemática e Física</small></div>
+      <div class="row"><small id="upd"></small><button class="btn sec" id="refresh" style="color:#fff;border-color:#ffffff66">Atualizar</button><button class="btn sec" id="logout" style="color:#fff;border-color:#ffffff66">Sair</button></div>
+    </div>
+    <div class="card" id="summary"></div>
+    <div class="card">
+      <div class="row" style="margin-bottom:12px"><h2 style="margin:0;margin-right:auto">Alunos</h2>
+        <select id="fturma"><option value="">Todas as turmas</option></select>
+        <input type="search" id="fnome" placeholder="Buscar aluno">
+        <button class="btn" id="csv">Baixar planilha (CSV)</button></div>
+      <div class="tw"><table><thead><tr>
+        <th data-s="pos" class="num">#</th><th data-s="nome">Aluno</th><th data-s="turma">Turma</th><th data-s="total" class="num">Total</th><th data-s="mat" class="num">Mat.</th><th data-s="fis" class="num">Fís.</th><th data-s="pct" class="num">%</th><th data-s="at">Enviado em</th><th>Obs.</th></tr></thead>
+        <tbody id="rows"></tbody></table></div>
+      <p class="muted" style="margin:10px 0 0;font-size:13px">Clique em um aluno para ver a análise detalhada. Clique no título da coluna para ordenar.</p>
+    </div>
+    <div class="card detail" id="detail" hidden></div>
+    <div class="card" id="qstats"></div>
+    <div class="card" id="tstats"></div>
+  </div>
+</div>
+
+<script>
+(function(){
+"use strict";
+var OPEN=Date.UTC(2026,10,14,15,0,0),CLOSE=Date.UTC(2026,10,15,1,0,0);
+var pw=null,DATA=null,sortKey="total",sortDir=-1,sel=null,timer=null;
+function $(s){return document.querySelector(s)}
+function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
+function pad(n){return (n<10?"0":"")+n}
+function dec(v){return v.toFixed(1).replace(".",",")}
+function fmt(ms){return new Date(ms).toLocaleString("pt-BR",{timeZone:"America/Sao_Paulo",day:"2-digit",month:"2-digit",hour:"2-digit",minute:"2-digit"}).replace(",","")}
+function meter(v,t,fis){var p=t?Math.round(v/t*100):0;return '<div class="meter'+(fis?" fis":"")+(p<40&&!fis?" low":"")+'"><i style="width:'+p+'%"></i></div>'}
+function api(method,qs){
+  return fetch("/api/results"+(qs||""),{method:method||"GET",headers:{"x-prof-password":pw}}).then(function(r){
+    return r.json().then(function(j){if(!r.ok){var e=new Error(j.error||"Erro");e.status=r.status;throw e}return j})});
+}
+
+$("#lf").addEventListener("submit",function(e){
+  e.preventDefault();pw=$("#pw").value;$("#lerr").textContent="";
+  load(true);
+});
+function load(first){
+  api().then(function(j){
+    DATA=j;if(first){try{sessionStorage.setItem("pp",pw)}catch(e){}}
+    $("#login").hidden=true;$("#panel").hidden=false;render();
+    if(!timer)timer=setInterval(function(){load(false)},30000);
+  }).catch(function(e){
+    if(e.status===401||e.status===429||first){$("#login").hidden=false;$("#panel").hidden=true;$("#lerr").textContent=e.message;try{sessionStorage.removeItem("pp")}catch(x){}}
+    else $("#upd").textContent="Falha ao atualizar";
+  });
+}
+$("#refresh").addEventListener("click",function(){load(false)});
+$("#logout").addEventListener("click",function(){try{sessionStorage.removeItem("pp")}catch(e){}location.reload()});
+try{var sp=sessionStorage.getItem("pp");if(sp){pw=sp;load(true)}}catch(e){}
+
+function rowsData(){
+  var ft=$("#fturma").value,fn=$("#fnome").value.trim().toLowerCase();
+  var r=DATA.subs.filter(function(s){return (!ft||s.turma===ft)&&(!fn||s.nome.toLowerCase().indexOf(fn)>=0)});
+  r.forEach(function(s){s.pct=Math.round(s.total/60*100)});
+  var all=DATA.subs.slice().sort(function(a,b){return b.total-a.total||a.nome.localeCompare(b.nome,"pt-BR")});
+  all.forEach(function(s,i){s.pos=i+1});
+  r.sort(function(a,b){var x=a[sortKey],y=b[sortKey];if(typeof x==="string")return sortDir*x.localeCompare(y,"pt-BR");return sortDir*((x>y)-(x<y))||a.nome.localeCompare(b.nome,"pt-BR")});
+  return r;
+}
+function render(){
+  var subs=DATA.subs,n=subs.length;
+  $("#upd").textContent="Atualizado às "+pad(new Date().getHours())+":"+pad(new Date().getMinutes());
+  // turmas
+  var cur=$("#fturma").value,ts=[];subs.forEach(function(s){if(ts.indexOf(s.turma)<0)ts.push(s.turma)});ts.sort();
+  $("#fturma").innerHTML='<option value="">Todas as turmas</option>'+ts.map(function(t){return '<option'+(t===cur?" selected":"")+'>'+esc(t)+'</option>'}).join("");
+  if(!n){$("#summary").innerHTML='<h2>Resultado da turma</h2><p class="muted">Nenhuma prova enviada ainda. Esta página atualiza sozinha a cada 30 segundos.</p>';$("#rows").innerHTML="";$("#detail").hidden=true;$("#qstats").innerHTML="";$("#tstats").innerHTML="";return}
+  var sum=function(f){return subs.reduce(function(a,s){return a+f(s)},0)};
+  var best=Math.max.apply(null,subs.map(function(s){return s.total})),worst=Math.min.apply(null,subs.map(function(s){return s.total}));
+  $("#summary").innerHTML='<h2>Resultado da turma</h2><div class="kpis"><div><b>'+n+'</b><span>provas enviadas</span></div><div><b>'+dec(sum(function(s){return s.total})/n)+'</b><span>média geral (de 60)</span></div><div><b>'+dec(sum(function(s){return s.mat})/n)+'</b><span>média Matemática (de 45)</span></div><div><b>'+dec(sum(function(s){return s.fis})/n)+'</b><span>média Física (de 15)</span></div><div><b>'+best+' / '+worst+'</b><span>maior / menor nota</span></div></div>';
+  // tabela
+  var r=rowsData();
+  $("#rows").innerHTML=r.map(function(s){
+    var fl=[];if(s.at>CLOSE+60000)fl.push("enviada após 22h");if(s.auto)fl.push("envio automático");
+    return '<tr data-id="'+s.id+'" tabindex="0"><td class="num">'+s.pos+'</td><td>'+esc(s.nome)+'</td><td>'+esc(s.turma)+'</td><td class="num"><b>'+s.total+'</b></td><td class="num">'+s.mat+'</td><td class="num">'+s.fis+'</td><td class="num">'+s.pct+'%</td><td>'+fmt(s.at)+'</td><td class="flag">'+fl.join("; ")+'</td></tr>'}).join("");
+  // questões
+  var cnt=[];for(var i=0;i<60;i++)cnt.push(0);
+  subs.forEach(function(s){for(var i=0;i<60;i++)if(s.ans.charAt(i)===DATA.meta.key.charAt(i))cnt[i]++});
+  var ord=cnt.map(function(c,i){return {i:i,c:c}}).sort(function(a,b){return a.c-b.c||a.i-b.i}).slice(0,10);
+  $("#qstats").innerHTML='<h2>Questões com menos acertos</h2><div class="tw"><table><thead><tr><th>Questão</th><th>Tema</th><th class="num">Acertaram</th><th></th></tr></thead><tbody>'+ord.map(function(o){
+    // alternativa mais marcada errada
+    var c={};subs.forEach(function(s){var m=s.ans.charAt(o.i);if(m!==DATA.meta.key.charAt(o.i)&&m!=="-")c[m]=(c[m]||0)+1});
+    var top=Object.keys(c).sort(function(a,b){return c[b]-c[a]})[0];
+    return '<tr><td>Questão '+pad(o.i+1)+'</td><td>'+DATA.meta.temas[DATA.meta.temaQ[o.i]]+(top?' <span class="muted">· erro mais comum: '+top+' (correta '+DATA.meta.key.charAt(o.i)+')</span>':'')+'</td><td class="num">'+o.c+' de '+n+' ('+Math.round(o.c/n*100)+'%)</td><td>'+meter(o.c,n,o.i>=45)+'</td></tr>'}).join("")+'</tbody></table></div>';
+  // temas
+  var keys=Object.keys(DATA.meta.temas);
+  $("#tstats").innerHTML='<h2>Acertos por tema (média da turma)</h2><div class="tw"><table><thead><tr><th>Tema</th><th class="num">Acerto</th><th></th></tr></thead><tbody>'+keys.map(function(k,i){
+    var tot=subs[0].tema[k][1],hits=sum(function(s){return s.tema[k][0]});
+    return '<tr><td>'+(i<10?"Mat · ":"Fís · ")+DATA.meta.temas[k]+'</td><td class="num">'+Math.round(hits/(n*tot)*100)+'%</td><td>'+meter(hits,n*tot,i>=10)+'</td></tr>'}).join("")+'</tbody></table></div>';
+  if(sel)showDetail(sel,true);
+}
+function showDetail(id,keep){
+  var s=DATA.subs.filter(function(x){return x.id===id})[0],el=$("#detail");
+  if(!s){el.hidden=true;sel=null;return}
+  sel=id;var key=DATA.meta.key,keys=Object.keys(DATA.meta.temas),n=DATA.subs.length;
+  var branco=0;for(var i=0;i<60;i++)if(s.ans.charAt(i)==="-")branco++;
+  var tempo=s.started?Math.round((s.at-s.started)/60000):null;
+  var fracos=keys.filter(function(k){return s.tema[k][0]/s.tema[k][1]<0.5}).map(function(k){return '<span class="pill">'+DATA.meta.temas[k]+' ('+s.tema[k][0]+'/'+s.tema[k][1]+')</span>'}).join("");
+  var h='<div class="row" style="justify-content:space-between"><h2 style="margin:0">'+esc(s.nome)+' · '+esc(s.turma)+'</h2><div class="row"><button class="btn danger" id="del">Apagar envio</button><button class="btn sec" id="close">Fechar</button></div></div>'
+   +'<div class="kpis" style="margin:14px 0"><div><b>'+s.total+'/60</b><span>'+Math.round(s.total/60*100)+'% de acertos</span></div><div><b>'+s.mat+'/45</b><span>Matemática</span></div><div><b>'+s.fis+'/15</b><span>Física</span></div><div><b>'+branco+'</b><span>em branco</span></div>'
+   +(tempo!=null?'<div><b>'+tempo+' min</b><span>tempo na prova</span></div>':'')+'<div><b>'+dec(DATA.subs.reduce(function(a,x){return a+x.total},0)/n)+'</b><span>média da turma</span></div></div>'
+   +'<h3>Temas para reforçar (menos de 50% de acerto)</h3><p>'+(fracos||'<span class="muted">Nenhum tema abaixo de 50%.</span>')+'</p>'
+   +'<h3>Desempenho por tema</h3><div class="tw"><table><thead><tr><th>Tema</th><th class="num">Acertos</th><th></th></tr></thead><tbody>'+keys.map(function(k,i){var a=s.tema[k];return '<tr><td>'+(i<10?"Mat · ":"Fís · ")+DATA.meta.temas[k]+'</td><td class="num">'+a[0]+'/'+a[1]+'</td><td>'+meter(a[0],a[1],i>=10)+'</td></tr>'}).join("")+'</tbody></table></div>'
+   +'<h3 style="margin-top:14px">Questão por questão</h3><div class="rv">'+s.ans.split("").map(function(m,i){var c=key.charAt(i),cls,t;
+      if(m===c){cls="ok";t="marcou "+m+" ✓"}else if(m==="-"){cls="bl";t="branco · correta "+c}else{cls="bad";t="marcou "+m+" ✗ · correta "+c}
+      return '<div class="ri '+cls+'" title="'+esc(DATA.meta.temas[DATA.meta.temaQ[i]])+'"><b>'+pad(i+1)+'</b> '+t+'</div>'}).join("")+'</div>';
+  el.innerHTML=h;el.hidden=false;
+  $("#close").onclick=function(){sel=null;el.hidden=true};
+  $("#del").onclick=function(){
+    if(!confirm("Apagar o envio de "+s.nome+"? O aluno poderá refazer e reenviar a prova."))return;
+    api("DELETE","?id="+s.id).then(function(){sel=null;el.hidden=true;load(false)}).catch(function(e){alert(e.message)});
+  };
+  if(!keep)el.scrollIntoView({behavior:"smooth",block:"start"});
+}
+$("#rows").addEventListener("click",function(e){var tr=e.target.closest("tr[data-id]");if(tr)showDetail(tr.getAttribute("data-id"))});
+$("#rows").addEventListener("keydown",function(e){if(e.key==="Enter"){var tr=e.target.closest("tr[data-id]");if(tr)showDetail(tr.getAttribute("data-id"))}});
+document.querySelector("thead").addEventListener("click",function(e){var th=e.target.closest("th[data-s]");if(!th)return;var k=th.getAttribute("data-s");if(sortKey===k)sortDir=-sortDir;else{sortKey=k;sortDir=(k==="nome"||k==="turma"||k==="pos")?1:-1}render()});
+$("#fturma").addEventListener("change",render);$("#fnome").addEventListener("input",render);
+$("#csv").addEventListener("click",function(){
+  var r=rowsData(),lines=["Posição;Nome;Turma;Total (de 60);Matemática (de 45);Física (de 15);% acertos;Enviado em"];
+  r.forEach(function(s){lines.push([s.pos,s.nome,s.turma,s.total,s.mat,s.fis,s.pct+"%",fmt(s.at)].map(function(v){return '"'+String(v).replace(/"/g,'""')+'"'}).join(";"))});
+  var b=new Blob(["﻿"+lines.join("\n")],{type:"text/csv;charset=utf-8"}),a=document.createElement("a");
+  a.href=URL.createObjectURL(b);a.download="resultados-simulado-enem.csv";document.body.appendChild(a);a.click();a.remove();
+});
+})();
+</script>
+</body>
+</html>
