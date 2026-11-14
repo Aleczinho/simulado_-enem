@@ -18,6 +18,7 @@ h2{font-size:21px;margin-bottom:12px}h3{font-size:16px;margin-bottom:8px}
 .top h1{font-size:24px}.top small{opacity:.8}
 .card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:clamp(14px,3vw,24px);min-width:0}
 .muted{color:var(--muted)}
+textarea{font:14px var(--font-body);padding:10px 12px;border:1.5px solid var(--line);border-radius:10px;background:var(--bg);color:var(--fg);width:100%;resize:vertical}
 input,select{font:15px var(--font-body);padding:10px 12px;border:1.5px solid var(--line);border-radius:10px;background:var(--bg);color:var(--fg);min-width:0}
 input:focus-visible,select:focus-visible,button:focus-visible,tr[data-id]:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
 .btn{font:700 14px var(--font-body);padding:10px 16px;border-radius:10px;border:1.5px solid var(--amber);background:var(--amber);color:var(--amber-ink);cursor:pointer}
@@ -62,7 +63,9 @@ tr[data-id]{cursor:pointer}tr[data-id]:hover td{background:var(--bg)}
       <div><h1>Painel do professor</h1><small>Simulado Enem · 3º ano · Matemática e Física</small></div>
       <div class="row"><small id="upd"></small><button class="btn sec" id="refresh" style="color:#fff;border-color:#ffffff66">Atualizar</button><button class="btn sec" id="logout" style="color:#fff;border-color:#ffffff66">Sair</button></div>
     </div>
+    <div class="card" id="dbwarn" hidden style="border-color:var(--bad)"><b style="color:var(--bad)">O banco de dados não está respondendo.</b> Os envios feitos pelo site não aparecem aqui. Abra <a href="/api/health" target="_blank">/api/health</a> para ver o que falta. Enquanto isso, use os comprovantes dos alunos abaixo.</div>
     <div class="card" id="summary"></div>
+    <div class="card"><h2>Comprovantes recebidos dos alunos</h2><p class="muted">Se algum aluno não conseguiu enviar pelo site, cole aqui o comprovante dele (pode colar a conversa inteira do WhatsApp, ou o texto copiado do PDF) ou carregue os arquivos .txt. O sistema corrige com o gabarito oficial e inclui o aluno na lista abaixo.</p><textarea id="paste" rows="5" placeholder="Cole aqui os comprovantes…"></textarea><div class="row" style="margin-top:8px"><input type="file" id="files" multiple accept=".txt,text/plain"><span class="muted" id="impinfo"></span></div></div>
     <div class="card">
       <div class="row" style="margin-bottom:12px"><h2 style="margin:0;margin-right:auto">Alunos</h2>
         <select id="fturma"><option value="">Todas as turmas</option></select>
@@ -83,7 +86,7 @@ tr[data-id]{cursor:pointer}tr[data-id]:hover td{background:var(--bg)}
 (function(){
 "use strict";
 var OPEN=Date.UTC(2026,10,14,15,0,0),CLOSE=Date.UTC(2026,10,15,1,0,0);
-var pw=null,DATA=null,sortKey="total",sortDir=-1,sel=null,timer=null;
+var pw=null,DATA=null,SRV=[],IMP=[],impT=null,sortKey="total",sortDir=-1,sel=null,timer=null;
 function $(s){return document.querySelector(s)}
 function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
 function pad(n){return (n<10?"0":"")+n}
@@ -101,8 +104,11 @@ $("#lf").addEventListener("submit",function(e){
 });
 function load(first){
   api().then(function(j){
-    DATA=j;if(first){try{sessionStorage.setItem("pp",pw)}catch(e){}}
+    DATA=j;SRV=j.subs;merge();if(first){try{sessionStorage.setItem("pp",pw)}catch(e){}}
+    $("#dbwarn").hidden=!j.dbError;
+    var firstShow=$("#panel").hidden;
     $("#login").hidden=true;$("#panel").hidden=false;render();
+    if(firstShow){try{$("#paste").value=localStorage.getItem("simulado-prof-paste")||""}catch(e){}runImport()}
     if(!timer)timer=setInterval(function(){load(false)},30000);
   }).catch(function(e){
     if(e.status===401||e.status===429||first){$("#login").hidden=false;$("#panel").hidden=true;$("#lerr").textContent=e.message;try{sessionStorage.removeItem("pp")}catch(x){}}
@@ -113,6 +119,22 @@ $("#refresh").addEventListener("click",function(){load(false)});
 $("#logout").addEventListener("click",function(){try{sessionStorage.removeItem("pp")}catch(e){}location.reload()});
 try{var sp=sessionStorage.getItem("pp");if(sp){pw=sp;load(true)}}catch(e){}
 
+function merge(){var ids={};SRV.forEach(function(s){ids[s.id]=1});DATA.subs=SRV.concat(IMP.filter(function(s){return !ids[s.id]}))}
+function runImport(){
+  var txt=$("#paste").value;try{localStorage.setItem("simulado-prof-paste",txt)}catch(e){}
+  if(!txt.trim()){IMP=[];$("#impinfo").textContent="";if(DATA){merge();render()}return}
+  fetch("/api/grade",{method:"POST",headers:{"x-prof-password":pw,"Content-Type":"application/json"},body:JSON.stringify({text:txt})})
+   .then(function(r){return r.json().then(function(j){return {ok:r.ok,j:j}})})
+   .then(function(x){if(!x.ok)throw new Error(x.j.error||"Erro");IMP=x.j.subs.map(function(s){s.imp=1;return s});
+     $("#impinfo").textContent=x.j.subs.length+" comprovante(s) válido(s)"+(x.j.ignored?" · "+x.j.ignored+" ignorado(s)":"");if(DATA){merge();render()}})
+   .catch(function(e){$("#impinfo").textContent=e.message});
+}
+$("#paste").addEventListener("input",function(){clearTimeout(impT);impT=setTimeout(runImport,600)});
+$("#files").addEventListener("change",function(){
+  var fs=Array.prototype.slice.call(this.files),n=fs.length,acc="";if(!n)return;
+  fs.forEach(function(f){var r=new FileReader();r.onload=function(){acc+="\n"+r.result;if(--n===0){var ta=$("#paste");ta.value=(ta.value+acc).trim();runImport()}};r.readAsText(f)});
+  this.value="";
+});
 function rowsData(){
   var ft=$("#fturma").value,fn=$("#fnome").value.trim().toLowerCase();
   var r=DATA.subs.filter(function(s){return (!ft||s.turma===ft)&&(!fn||s.nome.toLowerCase().indexOf(fn)>=0)});
@@ -135,7 +157,7 @@ function render(){
   // tabela
   var r=rowsData();
   $("#rows").innerHTML=r.map(function(s){
-    var fl=[];if(s.at>CLOSE+60000)fl.push("enviada após 22h");if(s.auto)fl.push("envio automático");
+    var fl=[];if(s.at>CLOSE+60000)fl.push("enviada após 22h");if(s.auto)fl.push("envio automático");if(s.imp)fl.push("via comprovante");if(s.bad)fl.push("código alterado");
     return '<tr data-id="'+s.id+'" tabindex="0"><td class="num">'+s.pos+'</td><td>'+esc(s.nome)+'</td><td>'+esc(s.turma)+'</td><td class="num"><b>'+s.total+'</b></td><td class="num">'+s.mat+'</td><td class="num">'+s.fis+'</td><td class="num">'+s.pct+'%</td><td>'+fmt(s.at)+'</td><td class="flag">'+fl.join("; ")+'</td></tr>'}).join("");
   // questões
   var cnt=[];for(var i=0;i<60;i++)cnt.push(0);
@@ -160,7 +182,7 @@ function showDetail(id,keep){
   var branco=0;for(var i=0;i<60;i++)if(s.ans.charAt(i)==="-")branco++;
   var tempo=s.started?Math.round((s.at-s.started)/60000):null;
   var fracos=keys.filter(function(k){return s.tema[k][0]/s.tema[k][1]<0.5}).map(function(k){return '<span class="pill">'+DATA.meta.temas[k]+' ('+s.tema[k][0]+'/'+s.tema[k][1]+')</span>'}).join("");
-  var h='<div class="row" style="justify-content:space-between"><h2 style="margin:0">'+esc(s.nome)+' · '+esc(s.turma)+'</h2><div class="row"><button class="btn danger" id="del">Apagar envio</button><button class="btn sec" id="close">Fechar</button></div></div>'
+  var h='<div class="row" style="justify-content:space-between"><h2 style="margin:0">'+esc(s.nome)+' · '+esc(s.turma)+'</h2><div class="row">'+(s.imp?'':'<button class="btn danger" id="del">Apagar envio</button>')+'<button class="btn sec" id="close">Fechar</button></div></div>'
    +'<div class="kpis" style="margin:14px 0"><div><b>'+s.total+'/60</b><span>'+Math.round(s.total/60*100)+'% de acertos</span></div><div><b>'+s.mat+'/45</b><span>Matemática</span></div><div><b>'+s.fis+'/15</b><span>Física</span></div><div><b>'+branco+'</b><span>em branco</span></div>'
    +(tempo!=null?'<div><b>'+tempo+' min</b><span>tempo na prova</span></div>':'')+'<div><b>'+dec(DATA.subs.reduce(function(a,x){return a+x.total},0)/n)+'</b><span>média da turma</span></div></div>'
    +'<h3>Temas para reforçar (menos de 50% de acerto)</h3><p>'+(fracos||'<span class="muted">Nenhum tema abaixo de 50%.</span>')+'</p>'
@@ -170,7 +192,7 @@ function showDetail(id,keep){
       return '<div class="ri '+cls+'" title="'+esc(DATA.meta.temas[DATA.meta.temaQ[i]])+'"><b>'+pad(i+1)+'</b> '+t+'</div>'}).join("")+'</div>';
   el.innerHTML=h;el.hidden=false;
   $("#close").onclick=function(){sel=null;el.hidden=true};
-  $("#del").onclick=function(){
+  if($("#del"))$("#del").onclick=function(){
     if(!confirm("Apagar o envio de "+s.nome+"? O aluno poderá refazer e reenviar a prova."))return;
     api("DELETE","?id="+s.id).then(function(){sel=null;el.hidden=true;load(false)}).catch(function(e){alert(e.message)});
   };

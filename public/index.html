@@ -175,6 +175,8 @@ input[type=text]:focus-visible,textarea:focus-visible,.btn:focus-visible,.mb:foc
 .kpis b{display:block;font:700 26px/1.1 var(--font-head)}
 .kpis span{font-size:13px;color:var(--muted)}
 .foot{font-size:13px;color:var(--muted);display:flex;flex-wrap:wrap;justify-content:space-between;gap:6px 16px}
+.printrec{display:none}.offbox{margin-top:14px;padding-top:12px;border-top:1px solid var(--line)}.offbox p{margin:0 0 8px}
+@media print{header.cover,footer.foot,body::before{display:none!important}#app>*{display:none!important}#app>.printrec{display:block!important}body{background:#fff!important;color:#000!important}.printrec h2{color:#000;margin-bottom:12px}}
 @media (prefers-reduced-motion:reduce){.pbar i{transition:none}html{scroll-behavior:auto}}
 </style>
 
@@ -403,7 +405,7 @@ function view(){return S.done?"result":(S.started?"exam":"start")}
 function render(){
   var v=view(),t=Date.now();
   lastPh=phase(t);lastRv=revealOK(t);
-  app.innerHTML=v==="result"?resultHTML(t):v==="exam"?examHTML():startHTML(t);
+  app.innerHTML=v==="result"?(S.done.res?resultHTML(t):offlineHTML(t)):v==="exam"?examHTML():startHTML(t);
   
   if(v==="exam"){refreshProgress()}
   tick();loadGab();
@@ -483,7 +485,7 @@ function renderFinal(){
     h+=miss.length?'<p>Você respondeu <b>'+(60-miss.length)+'</b> de 60 questões. Sem resposta: '+miss.map(function(n){return '<button type="button" class="chip" data-act="jump" data-n="'+n+'">'+n+'</button>'}).join("")+'</p>':'<p>Todas as 60 questões estão respondidas.</p>';
     h+='<p class="muted">Depois de enviar, não é possível alterar as respostas.</p><button type="button" class="btn" data-act="ask">Enviar prova</button>';
   }else{
-    h+=(sendErr?'<p class="err" role="alert">'+esc(sendErr)+'</p>':'')+'<p><b>Confirmar envio?</b> '+(miss.length?miss.length+(miss.length>1?" questões ficarão":" questão ficará")+' em branco. ':'')+'Não será possível alterar depois.</p><div class="row"><button type="button" class="btn sec" data-act="cancel">Voltar à prova</button><button type="button" class="btn" data-act="send">Sim, enviar agora</button></div>';
+    h+=(sendErr?'<p class="err" role="alert">'+esc(sendErr)+'</p>':'')+'<p><b>Confirmar envio?</b> '+(miss.length?miss.length+(miss.length>1?" questões ficarão":" questão ficará")+' em branco. ':'')+'Não será possível alterar depois.</p><div class="row"><button type="button" class="btn sec" data-act="cancel">Voltar à prova</button><button type="button" class="btn" data-act="send">Sim, enviar agora</button></div>'+(sendErr?'<div class="offbox"><p><b>Não consegue enviar?</b> Gere um comprovante com as suas respostas, salve em PDF e entregue ao professor.</p><button type="button" class="btn sec" data-act="offline">Gerar comprovante para entregar ao professor</button></div>':'');
   }
   el.innerHTML=h;
 }
@@ -510,6 +512,59 @@ function resultHTML(t){
 }
 
 /* ---------- ações ---------- */
+var retryMsg="";
+function receiptCode(){var base=["SE1",clean(S.nome),clean(S.turma),S.done.ans,Math.floor(S.done.at/1000)].join("|");return base+"|"+sig(base)}
+function receiptText(){return "SIMULADO ENEM · MATEMÁTICA E FÍSICA · 3º ANO\nAluno: "+clean(S.nome)+"\nTurma: "+clean(S.turma)+"\nGerado em: "+fmtDate(S.done.at)+"\nCódigo: "+receiptCode()}
+function copyText(text,btn,ta){
+  function done(ok){
+    if(btn){var o=btn.getAttribute("data-l")||btn.textContent;btn.setAttribute("data-l",o);btn.textContent=ok?"Copiado ✓":"Copie o texto marcado (Ctrl+C)";setTimeout(function(){btn.textContent=o},2600)}
+    if(!ok&&ta){ta.focus();ta.select()}
+  }
+  try{navigator.clipboard.writeText(text).then(function(){done(true)},function(){done(false)})}catch(e){done(false)}
+}
+function goOffline(){S.done={at:Date.now(),ans:ansStr(),res:null,offline:true};confirming=false;save();render();window.scrollTo(0,0)}
+function localGrade(ans){
+  var r={total:0,mat:0,fis:0,tema:{}};for(var k in TEMAS)r.tema[k]=[0,0];
+  Q.forEach(function(x,i){var ok=ans.charAt(i)===GAB.charAt(i);r.tema[x.t][1]++;if(ok){r.total++;r.tema[x.t][0]++;if(i<45)r.mat++;else r.fis++}});
+  return r;
+}
+function resendOffline(manual){
+  if(sending)return;
+  if(!manual&&Date.now()-lastTry<60000)return;
+  lastTry=Date.now();sending=true;
+  if(manual){retryMsg="Enviando…";render()}
+  var payload={nome:S.nome,turma:S.turma,ans:S.done.ans,started:S.started,auto:false};
+  fetch("/api/submit",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload)})
+   .then(function(r){return r.json().then(function(j){return {ok:r.ok,j:j}})})
+   .then(function(x){
+     sending=false;
+     if(!x.ok)throw new Error("x");
+     S.done={at:x.j.at,ans:payload.ans,res:x.j.res};save();render();window.scrollTo(0,0);
+   })
+   .catch(function(){sending=false;retryMsg="O servidor ainda não respondeu. Use o comprovante abaixo.";if(manual)render()});
+}
+function offlineHTML(t){
+  var txt=receiptText(),keys=Object.keys(TEMAS),h='',ans=S.done.ans;
+  h+='<section class="card"><h2>Comprovante da prova</h2><p><b>Suas respostas ainda não chegaram ao professor.</b> Envie o comprovante abaixo a ele, do jeito combinado: WhatsApp, e-mail ou PDF. Enquanto esta página ficar aberta, ela também tenta enviar sozinha ao servidor.</p>'
+   +(retryMsg?'<p class="muted">'+esc(retryMsg)+'</p>':'')
+   +'<textarea class="receipt" id="receipt" rows="7" readonly aria-label="Comprovante">'+esc(txt)+'</textarea>'
+   +'<div class="row"><button type="button" class="btn" data-act="copyrec">Copiar comprovante</button>'
+   +'<a class="btn sec" target="_blank" rel="noopener" href="https://wa.me/?text='+encodeURIComponent(txt)+'">Enviar pelo WhatsApp</a>'
+   +'<button type="button" class="btn sec" data-act="dlrec">Baixar arquivo (.txt)</button>'
+   +'<button type="button" class="btn sec" data-act="printrec">Salvar em PDF</button>'
+   +'<button type="button" class="btn sec" data-act="resend">Tentar enviar de novo</button></div></section>';
+  if(GAB&&revealOK(t)){
+    var g=localGrade(ans),pct=Math.round(g.total/60*100);
+    h+='<section class="card hero"><p class="eyebrow">Resultado de '+esc(S.nome)+' · '+esc(S.turma)+'</p><div class="score"><span class="big">'+g.total+'</span><span class="of">de 60 questões · '+pct+'% de acertos</span></div>'
+     +'<div class="meters"><div><div class="ml"><span>Matemática</span><span>'+g.mat+'/45</span></div>'+meter(g.mat,45,false)+'</div><div><div class="ml"><span>Física</span><span>'+g.fis+'/15</span></div>'+meter(g.fis,15,true)+'</div></div></section>'
+     +'<section class="card"><h2>Gabarito e correção</h2>'+reviewHTML(ans)+'</section>';
+  }else h+='<section class="card"><h2>Nota e gabarito</h2><p>Sua nota e o gabarito aparecem aqui depois das 22h de 14/11. Volte a este link neste mesmo aparelho depois desse horário.</p></section>';
+  var parts=[];for(var i=0;i<60;i++)parts.push(pad(i+1)+"-"+ans.charAt(i));
+  h+='<div class="printrec"><h2>Simulado Enem · 3º ano · Matemática e Física</h2><p><b>Aluno:</b> '+esc(S.nome)+'</p><p><b>Turma:</b> '+esc(S.turma)+'</p><p><b>Gerado em:</b> '+fmtDate(S.done.at)+'</p>'
+   +'<p><b>Respostas marcadas:</b><br>'+parts.join("&nbsp;&nbsp; ")+'</p>'
+   +'<p style="font-family:monospace;word-break:break-all"><b>Código:</b> '+esc(receiptCode())+'</p><p>Entregue este comprovante ao professor.</p></div>';
+  return h;
+}
 function submitExam(auto){
   if(sending)return;
   if(auto&&Date.now()-lastTry<15000)return;
@@ -549,6 +604,11 @@ app.addEventListener("click",function(e){
   else if(a==="gofinal"){var f=$("#final");if(f)f.scrollIntoView({behavior:"smooth",block:"start"})}
   else if(a==="ask"){confirming=true;renderFinal()}
   else if(a==="cancel"){confirming=false;renderFinal()}
+  else if(a==="offline"){goOffline()}
+  else if(a==="resend"){resendOffline(true)}
+  else if(a==="copyrec"){var ta=$("#receipt");copyText(ta.value,b,ta)}
+  else if(a==="printrec"){window.print()}
+  else if(a==="dlrec"){var bl=new Blob([receiptText()],{type:"text/plain;charset=utf-8"}),lk=document.createElement("a");lk.href=URL.createObjectURL(bl);lk.download="comprovante-simulado-"+clean(S.nome).toLowerCase().replace(/[^a-z0-9]+/g,"-")+".txt";document.body.appendChild(lk);lk.click();lk.remove()}
   else if(a==="send"){b.disabled=true;b.textContent="Enviando…";submitExam(false)}
   else if(a==="retry"){S={nome:S.nome,turma:S.turma,ans:{},started:0,done:null};save();render();window.scrollTo(0,0)}
 });
@@ -563,6 +623,7 @@ function tick(){
     if(!TESTE){var left=CLOSE-t;txt+=" · encerra em "+dur(left);if(left<30*60000)warn=true}
     ck.textContent=txt;ck.classList.toggle("warn",warn);
   }
+  if(S.done&&S.done.offline&&!S.done.res&&t<CLOSE+9*60000)resendOffline(false);
   if(!TESTE&&S.started&&!S.done&&t>=CLOSE)submitExam(true);
 }
 setInterval(tick,1000);

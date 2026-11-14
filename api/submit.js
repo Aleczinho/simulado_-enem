@@ -27,6 +27,7 @@ module.exports = async (req, res) => {
       return res.status(200).json({ at: old.at, dup: true, res: { total: g.total, mat: g.mat, fis: g.fis, tema: g.tema } });
     }
   } catch (e) {
+    console.error("submit/redis:", e && e.message);
     return res.status(500).json({ error: "Falha ao salvar. Tente novamente em instantes." });
   }
   const g = grade(ans);

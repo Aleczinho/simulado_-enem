@@ -12,10 +12,8 @@ module.exports = async (req, res) => {
     return res.status(200).json({ ok: true });
   }
 
-  let all = {};
-  try { all = (await redis.hgetall("subs")) || {}; } catch (e) {
-    return res.status(500).json({ error: "Falha ao ler o banco de dados." });
-  }
+  let all = {}, dbError = false;
+  try { all = (await redis.hgetall("subs")) || {}; } catch (e) { dbError = true; all = {}; }
   const subs = Object.keys(all).map((id) => {
     let r = all[id];
     if (typeof r === "string") r = JSON.parse(r);
@@ -23,5 +21,5 @@ module.exports = async (req, res) => {
     return { id, nome: r.nome, turma: r.turma, ans: r.ans, at: r.at, started: r.started, auto: r.auto,
              total: g.total, mat: g.mat, fis: g.fis, tema: g.tema };
   });
-  res.status(200).json({ subs, meta: { key: KEY, temaQ: TEMA_Q, temas: TEMAS } });
+  res.status(200).json({ subs, dbError, meta: { key: KEY, temaQ: TEMA_Q, temas: TEMAS } });
 };
