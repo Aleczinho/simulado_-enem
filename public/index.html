@@ -28,6 +28,7 @@
   --chart1:#8fa9f2; --on-chart1:#0b1220; --select:#1d2c57; color-scheme:dark}
 
 *{box-sizing:border-box}
+ :root{--space-1:4px;--space-2:8px;--space-3:12px;--space-4:16px;--space-5:20px;--space-6:24px;--radius-sm:10px;--radius-md:14px;--radius-lg:20px;--shadow-1:0 2px 8px rgb(20 33 61/.08);--shadow-2:0 12px 32px rgb(20 33 61/.14);--shadow-3:0 24px 60px rgb(20 33 61/.2);--motion:160ms ease}
 body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.55 var(--font-body);padding-block:12px 40px;
   padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
 body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
@@ -41,6 +42,31 @@ a{color:var(--chart1)}
 #app{display:grid;gap:18px;min-width:0}
 
 .cover{background:var(--navy);color:var(--navy-fg);border-radius:16px;padding:26px clamp(18px,4vw,40px);display:grid;gap:12px}
+.btn,.card,.opt,.mb{transition:transform var(--motion),border-color var(--motion),background-color var(--motion),box-shadow var(--motion),color var(--motion)}
+.btn{background:linear-gradient(135deg,#ffc04a,var(--amber));box-shadow:var(--shadow-1)}
+.btn:hover{box-shadow:var(--shadow-2);transform:translateY(-1px)}
+.btn:active{transform:translateY(1px) scale(.99)}
+:focus-visible{outline:3px solid var(--amber)!important;outline-offset:3px}
+.card{box-shadow:var(--shadow-1)}
+.choice-screen{position:relative;isolation:isolate;overflow:hidden;min-height:min(680px,calc(100svh - 32px));display:grid;align-content:center;justify-items:center;gap:32px;padding:clamp(28px,6vw,72px);border-radius:var(--radius-lg);color:#fff;background:linear-gradient(135deg,#101d39 0%,#203f76 58%,#3f6da8 100%);box-shadow:var(--shadow-3)}
+.choice-screen:before,.choice-screen:after{content:"";position:absolute;z-index:-1;border-radius:50%;filter:blur(2px);pointer-events:none}
+.choice-screen:before{width:360px;height:360px;background:#86a9e33b;top:-130px;right:-70px}
+.choice-screen:after{width:280px;height:280px;background:#f5a52435;bottom:-150px;left:-80px}
+.choice-head{text-align:center;max-width:680px}
+.choice-head .eyebrow{color:#d9e3f6}
+.choice-head h1{font-size:clamp(38px,7vw,64px);margin:10px 0}
+.choice-head p{color:#e0e8f6;margin:0}
+.choice-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;width:min(760px,100%)}
+.choice-card{display:grid;justify-items:start;gap:12px;min-height:220px;padding:clamp(22px,4vw,34px);border:1px solid #ffffff50;border-radius:20px;background:#ffffff16;color:#fff;text-align:left;text-decoration:none;backdrop-filter:blur(14px);cursor:pointer}
+.choice-card:hover,.choice-card:focus-visible{transform:translateY(-4px);border-color:var(--amber);box-shadow:0 18px 38px #09152c55}
+.choice-card svg{width:42px;height:42px;color:#ffc04a;transition:transform var(--motion)}
+.choice-card:hover svg,.choice-card:focus-visible svg{transform:rotate(-5deg) translateY(-2px)}
+.choice-card strong{font:700 24px var(--font-head)}
+.choice-card span{color:#e0e8f6}
+body.choosing{padding:16px;min-height:100vh;background:linear-gradient(135deg,#14213d,#4575b4)}
+body.choosing .cover,body.choosing .foot{display:none}
+body.choosing .wrap{max-width:1120px;min-height:calc(100vh - 32px)}
+body.choosing #app{flex:1}
 .pills{display:flex;flex-wrap:wrap;gap:8px}
 .pill{background:var(--amber);color:var(--amber-ink);font:700 12px/1 var(--font-body);letter-spacing:.08em;text-transform:uppercase;padding:8px 14px;border-radius:99px}
 .pill.test{background:var(--teal);color:var(--on-teal)}
@@ -80,17 +106,18 @@ input[type=text]:focus-visible,textarea:focus-visible,.btn:focus-visible,.mb:foc
 .link{background:none;border:0;padding:6px 0;color:var(--chart1);font:600 14px var(--font-body);cursor:pointer;text-decoration:underline}
 .chip{background:var(--bg);border:1px solid var(--line);color:var(--fg);border-radius:8px;padding:2px 9px;font:600 13px var(--font-body);cursor:pointer;margin:2px}
 
-.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px 14px;display:grid;gap:8px;box-shadow:0 2px 10px rgb(0 0 0/.07)}
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:10px 14px;display:grid;gap:8px;box-shadow:var(--shadow-2)}
 .r1{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:6px 14px}
 .timer{font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
 .timer.warn{color:var(--bad);font-weight:700}
-.pbar{height:6px;background:var(--line);border-radius:3px;overflow:hidden}
-.pbar i{display:block;height:100%;background:var(--amber);width:0;transition:width .2s}
+.pbar{height:8px;background:var(--line);border-radius:99px;overflow:hidden}
+.pbar i{display:block;height:100%;background:linear-gradient(90deg,#f5a524,#ffd477);width:0;transition:width 240ms ease}
 .mapd summary{cursor:pointer;font-weight:600;font-size:14px}
 .mapd[open]{max-height:50vh;overflow:auto}
 .mapd .map{margin-top:10px}
 .map{display:grid;grid-template-columns:repeat(auto-fill,minmax(38px,1fr));gap:6px}
-.mb{height:36px;border-radius:8px;border:1px solid var(--line);background:var(--surface);color:var(--fg);font:600 13px var(--font-body);cursor:pointer;font-variant-numeric:tabular-nums}
+.mb{height:36px;border-radius:10px;border:1px solid var(--line);background:var(--surface);color:var(--fg);font:600 13px var(--font-body);cursor:pointer;font-variant-numeric:tabular-nums}
+.mb:hover{transform:translateY(-2px);box-shadow:var(--shadow-1)}
 .mb.done{background:var(--chart1);color:var(--on-chart1);border-color:var(--chart1)}
 .mb.fis.done{background:var(--teal);color:var(--on-teal);border-color:var(--teal)}
 .side{display:none}
@@ -110,15 +137,15 @@ input[type=text]:focus-visible,textarea:focus-visible,.btn:focus-visible,.mb:foc
 .q{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px clamp(14px,3vw,24px);scroll-margin-top:140px;min-width:0}
 .q.answered{border-color:var(--chart1)}
 .qhead{display:flex;flex-wrap:wrap;gap:6px 12px;align-items:center;margin-bottom:10px}
-.qnum{background:var(--navy);color:#fff;font:700 12px var(--font-body);letter-spacing:.05em;text-transform:uppercase;padding:6px 12px;border-radius:8px}
+.qnum{background:var(--chart1);color:#fff;font:700 12px var(--font-body);letter-spacing:.05em;text-transform:uppercase;padding:6px 12px;border-radius:10px}
 .qnum.fis{background:var(--teal-band)}
 .qtema{font:600 11px var(--font-body);letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}
 .st{margin-left:auto;font-size:12px;font-weight:600;color:var(--ok)}
 .qtext{margin:0 0 10px;max-width:72ch}
 .opts{display:grid;gap:8px;margin-top:8px}
-.opt{position:relative;display:grid;grid-template-columns:32px minmax(0,1fr);gap:12px;align-items:center;padding:9px 12px;border:1.5px solid var(--line);border-radius:10px;cursor:pointer;background:var(--surface)}
+.opt{position:relative;display:grid;grid-template-columns:36px minmax(0,1fr);gap:12px;align-items:center;min-height:56px;padding:10px 14px;border:1.5px solid var(--line);border-radius:14px;cursor:pointer;background:var(--surface)}
 .opt input{position:absolute;opacity:0;pointer-events:none}
-.ltr{width:30px;height:30px;border-radius:50%;border:1.5px solid var(--muted);display:grid;place-items:center;font:700 13px var(--font-body)}
+.ltr{width:34px;height:34px;border-radius:50%;border:1.5px solid var(--muted);display:grid;place-items:center;font:700 13px var(--font-body);transition:all var(--motion)}
 .opt:has(input:checked){border-color:var(--chart1);background:var(--select)}
 .opt input:checked+.ltr{background:var(--chart1);border-color:var(--chart1);color:var(--on-chart1)}
 .opt:has(input:focus-visible){outline:3px solid var(--amber);outline-offset:2px}
@@ -151,6 +178,14 @@ input[type=text]:focus-visible,textarea:focus-visible,.btn:focus-visible,.mb:foc
 .eyebrow{font:600 12px var(--font-body);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0}
 .score{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 14px}
 .big{font:700 clamp(56px,14vw,88px)/1 var(--font-head);color:var(--chart1)}
+.score-wrap{display:flex;align-items:center;gap:clamp(16px,4vw,32px);flex-wrap:wrap}
+.score-ring{width:150px;height:150px;flex:none;transform:rotate(-90deg)}
+.score-ring circle{fill:none;stroke-width:11}
+.score-ring .track{stroke:var(--line)}
+.score-ring .progress{stroke:var(--amber);stroke-linecap:round;stroke-dasharray:251.2;stroke-dashoffset:251.2;animation:ringIn 900ms ease both}
+.result-meter i{width:var(--target-width);animation:barIn 800ms ease both}
+@keyframes ringIn{to{stroke-dashoffset:var(--target-offset)}}
+@keyframes barIn{from{width:0}to{width:var(--target-width)}}
 .of{color:var(--muted)}
 .meters{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
 .ml{display:flex;justify-content:space-between;font-weight:600;margin-bottom:6px;font-variant-numeric:tabular-nums}
@@ -177,7 +212,8 @@ input[type=text]:focus-visible,textarea:focus-visible,.btn:focus-visible,.mb:foc
 .foot{font-size:13px;color:var(--muted);display:flex;flex-wrap:wrap;justify-content:space-between;gap:6px 16px}
 .printrec{display:none}.offbox{margin-top:14px;padding-top:12px;border-top:1px solid var(--line)}.offbox p{margin:0 0 8px}
 @media print{header.cover,footer.foot,body::before{display:none!important}#app>*{display:none!important}#app>.printrec{display:block!important}body{background:#fff!important;color:#000!important}.printrec h2{color:#000;margin-bottom:12px}}
-@media (prefers-reduced-motion:reduce){.pbar i{transition:none}html{scroll-behavior:auto}}
+@media (max-width:600px){.choice-grid{grid-template-columns:1fr}.choice-card{min-height:160px}.choice-screen{gap:24px;padding:28px 20px}.score-ring{width:118px;height:118px}}
+@media (prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
 </style>
 
 <div class="wrap">
@@ -401,14 +437,25 @@ function loadGab(){
 var app=$("#app");
 if(TESTE)$("#pills").insertAdjacentHTML("beforeend",'<span class="pill test">Modo de teste</span>');
 
-function view(){return S.done?"result":(S.started?"exam":"start")}
+var studentChosen=false;
+function view(){return S.done?"result":(S.started?"exam":(studentChosen?"start":"choice"))}
 function render(){
   var v=view(),t=Date.now();
   lastPh=phase(t);lastRv=revealOK(t);
-  app.innerHTML=v==="result"?(S.done.res?resultHTML(t):offlineHTML(t)):v==="exam"?examHTML():startHTML(t);
+  document.body.classList.toggle("choosing",v==="choice");
+  app.innerHTML=v==="choice"?choiceHTML():v==="result"?(S.done.res?resultHTML(t):offlineHTML(t)):v==="exam"?examHTML():startHTML(t);
   
   if(v==="exam"){refreshProgress()}
   tick();loadGab();
+}
+function choiceHTML(){
+  return '<section class="choice-screen" aria-labelledby="choice-title"><div class="choice-head"><p class="eyebrow">Simulado Enem · 3º ano</p><h1 id="choice-title">Quem está acessando?</h1><p>Escolha uma opção para continuar.</p></div><div class="choice-grid">'
+   +'<button class="choice-card" type="button" data-act="student"><svg viewBox="0 0 48 48" fill="none" aria-hidden="true"><path d="M9 8.5A4.5 4.5 0 0 1 13.5 4H40v34H13.5A4.5 4.5 0 0 0 9 42.5v-34Z" stroke="currentColor" stroke-width="2.5"/><path d="M9 9v33m9-28h14M18 21h14M18 28h10M6 39.5A4.5 4.5 0 0 1 10.5 35H40" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><path d="m34 30 7-7 3 3-7 7-5 2 2-5Z" fill="currentColor"/></svg><strong>Sou aluno</strong><span>Fazer o simulado</span></button>'
+   +'<button class="choice-card" type="button" data-act="professor"><svg viewBox="0 0 48 48" fill="none" aria-hidden="true"><path d="M5 41h38M10 36V24h8v12m5 0V13h8v23m5 0V7h7v29" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><path d="m9 17 10-7 8 4 12-9" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><path d="m35 5 4-.5-.5 4" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg><strong>Sou professor</strong><span>Ver resultados</span></button>'
+   +'</div></section>';
+}
+function scoreRingHTML(pct){
+  return '<svg class="score-ring" viewBox="0 0 100 100" role="img" aria-label="'+pct+'% de acertos"><circle class="track" cx="50" cy="50" r="40"></circle><circle class="progress" id="score-ring-progress" cx="50" cy="50" r="40" style="--target-offset:'+(251.2*(1-pct/100)).toFixed(2)+'"></circle></svg>';
 }
 
 function rulesHTML(){
@@ -489,7 +536,7 @@ function renderFinal(){
   }
   el.innerHTML=h;
 }
-function meter(v,tot,fis){return '<div class="meter'+(fis?" fis":"")+'"><i style="width:'+(tot?Math.round(v/tot*100):0)+'%"></i></div>'}
+function meter(v,tot,fis){var width=tot?Math.round(v/tot*100):0;return '<div class="meter result-meter'+(fis?" fis":"")+'"><i style="--target-width:'+width+'%"></i></div>'}
 function reviewHTML(str){
   var h='<div class="rv">';
   Q.forEach(function(x,i){var m=str.charAt(i),c=GAB.charAt(i),cls,txt;
@@ -500,7 +547,7 @@ function reviewHTML(str){
 function resultHTML(t){
   var g=S.done.res,rv=revealOK(t)&&!!GAB,pct=Math.round(g.total/60*100),keys=Object.keys(TEMAS);
   var h='<section class="card hero"><p class="eyebrow">Resultado de '+esc(S.nome)+' · '+esc(S.turma)+'</p>'
-   +'<div class="score"><span class="big">'+g.total+'</span><span class="of">de 60 questões · '+pct+'% de acertos</span></div>'
+   +'<div class="score-wrap">'+scoreRingHTML(pct)+'<div class="score"><span class="big">'+g.total+'</span><span class="of">de 60 questões · '+pct+'% de acertos</span></div></div>'
    +'<div class="meters"><div><div class="ml"><span>Matemática</span><span>'+g.mat+'/45</span></div>'+meter(g.mat,45,false)+'</div><div><div class="ml"><span>Física</span><span>'+g.fis+'/15</span></div>'+meter(g.fis,15,true)+'</div></div></section>';
   h+='<section class="card"><h2>Prova enviada ✓</h2><p>Suas respostas foram registradas e o professor já pode ver o seu resultado. <b>Não é preciso enviar mais nada.</b></p><p class="muted">Enviado em '+fmtDate(S.done.at)+'</p></section>';
   h+='<section class="card"><h2>Desempenho por tema</h2><div class="tw"><table class="tbl"><thead><tr><th>Tema</th><th class="num">Acertos</th><th></th></tr></thead><tbody>';
@@ -555,7 +602,7 @@ function offlineHTML(t){
    +'<button type="button" class="btn sec" data-act="resend">Tentar enviar de novo</button></div></section>';
   if(GAB&&revealOK(t)){
     var g=localGrade(ans),pct=Math.round(g.total/60*100);
-    h+='<section class="card hero"><p class="eyebrow">Resultado de '+esc(S.nome)+' · '+esc(S.turma)+'</p><div class="score"><span class="big">'+g.total+'</span><span class="of">de 60 questões · '+pct+'% de acertos</span></div>'
+    h+='<section class="card hero"><p class="eyebrow">Resultado de '+esc(S.nome)+' · '+esc(S.turma)+'</p><div class="score-wrap">'+scoreRingHTML(pct)+'<div class="score"><span class="big">'+g.total+'</span><span class="of">de 60 questões · '+pct+'% de acertos</span></div></div>'
      +'<div class="meters"><div><div class="ml"><span>Matemática</span><span>'+g.mat+'/45</span></div>'+meter(g.mat,45,false)+'</div><div><div class="ml"><span>Física</span><span>'+g.fis+'/15</span></div>'+meter(g.fis,15,true)+'</div></div></section>'
      +'<section class="card"><h2>Gabarito e correção</h2>'+reviewHTML(ans)+'</section>';
   }else h+='<section class="card"><h2>Nota e gabarito</h2><p>Sua nota e o gabarito aparecem aqui depois das 22h de 14/11. Volte a este link neste mesmo aparelho depois desse horário.</p></section>';
@@ -599,7 +646,9 @@ app.addEventListener("change",function(e){
 app.addEventListener("click",function(e){
   var b=e.target.closest("[data-act]");if(!b)return;
   var a=b.getAttribute("data-act"),n=b.getAttribute("data-n");
-  if(a==="jump"){var el=document.getElementById("q-"+n);if(el)el.scrollIntoView({behavior:"smooth",block:"start"});var d=$(".mapd");if(d)d.open=false}
+  if(a==="student"){studentChosen=true;render()}
+  else if(a==="professor"){window.location.href="/professor"}
+  else if(a==="jump"){var el=document.getElementById("q-"+n);if(el)el.scrollIntoView({behavior:"smooth",block:"start"});var d=$(".mapd");if(d)d.open=false}
   else if(a==="clear"){delete S.ans[n];save();var r=$("input[name=q"+n+"]:checked");if(r)r.checked=false;refreshProgress()}
   else if(a==="gofinal"){var f=$("#final");if(f)f.scrollIntoView({behavior:"smooth",block:"start"})}
   else if(a==="ask"){confirming=true;renderFinal()}

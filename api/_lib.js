@@ -52,13 +52,28 @@ async function checkProf(req, res) {
   if (!pass) { res.status(500).json({ error: "PROF_PASSWORD não configurada no servidor." }); return false; }
   const ip = String(req.headers["x-forwarded-for"] || "ip").split(",")[0].trim();
   const fk = "fail:" + ip;
+  let fails;
   try {
-    const fails = Number(await redis.get(fk)) || 0;
-    if (fails >= 10) { res.status(429).json({ error: "Muitas tentativas. Aguarde alguns minutos." }); return false; }
-  } catch (e) {}
+    fails = Number(await redis.get(fk)) || 0;
+  } catch (e) {
+    console.error("prof/rate-limit-read:", e && e.message);
+    res.status(503).json({ error: "Autenticação temporariamente indisponível. Tente novamente." });
+    return false;
+  }
+  if (fails >= 10) { res.status(429).json({ error: "Muitas tentativas. Aguarde alguns minutos." }); return false; }
   const given = req.headers["x-prof-password"] || "";
   if (!safeEq(given, pass)) {
-    try { await redis.incr(fk); await redis.expire(fk, 600); } catch (e) {}
+    try {
+      await redis.incr(fk);
+      await redis.expire(fk, 600);
+    } catch (e) {
+      console.error("prof/rate-limit-write:", e && e.message);
+      try { await redis.del(fk); } catch (cleanupError) {
+        console.error("prof/rate-limit-cleanup:", cleanupError && cleanupError.message);
+      }
+      res.status(503).json({ error: "Não foi possível registrar a tentativa. Tente novamente." });
+      return false;
+    }
     res.status(401).json({ error: "Senha incorreta." });
     return false;
   }

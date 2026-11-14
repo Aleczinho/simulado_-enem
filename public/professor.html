@@ -7,43 +7,70 @@
 <title>Painel do Professor · Simulado Enem</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap">
 <style>
-:root{--bg:#f1f4f9;--surface:#fff;--fg:#14213d;--muted:#56627a;--line:#d8deea;--navy:#14213d;--amber:#f59e0b;--amber-ink:#14213d;--amber-text:#a85b00;--amber-soft:#fdf1d6;--teal:#0f766e;--ok:#15703a;--ok-soft:#dcf4e3;--bad:#b3261e;--bad-soft:#fde7e4;--blue:#2b4a94;--font-head:"Space Grotesk",system-ui,sans-serif;--font-body:"Inter",system-ui,sans-serif}
-@media (prefers-color-scheme:dark){:root{--bg:#0b1220;--surface:#141e36;--fg:#e8ecf5;--muted:#9ba7bf;--line:#28365a;--navy:#1a2a52;--amber-text:#f5b74a;--amber-soft:#3b2d12;--teal:#35b5a6;--ok:#5ee08a;--ok-soft:#12351f;--bad:#ff8a80;--bad-soft:#3d1b1a;--blue:#8fa9f2;color-scheme:dark}}
+:root{--bg:#f1f4f9;--surface:#fff;--fg:#14213d;--muted:#56627a;--line:#d8deea;--navy:#14213d;--amber:#f5a524;--amber-ink:#14213d;--amber-text:#8f4c00;--amber-soft:#fdf1d6;--teal:#0f766e;--ok:#15703a;--ok-soft:#dcf4e3;--bad:#b3261e;--bad-soft:#fde7e4;--blue:#2b4a94;--font-head:"Space Grotesk",system-ui,sans-serif;--font-body:"Inter",system-ui,sans-serif;--s1:4px;--s2:8px;--s3:12px;--s4:16px;--s5:20px;--s6:24px;--r1:10px;--r2:14px;--r3:20px;--shadow1:0 2px 8px #14213d12;--shadow2:0 12px 32px #14213d18;--shadow3:0 24px 60px #14213d24;--motion:160ms ease}
+@media (prefers-color-scheme:dark){:root{--bg:#0b1220;--surface:#141e36;--fg:#e8ecf5;--muted:#aab5cb;--line:#28365a;--navy:#1a2a52;--amber-text:#ffd06d;--amber-soft:#3b2d12;--teal:#35b5a6;--ok:#75e79a;--ok-soft:#12351f;--bad:#ff9a91;--bad-soft:#3d1b1a;--blue:#a8bcff;color-scheme:dark}}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.5 var(--font-body);padding:12px 16px 40px}
 h1,h2,h3{font-family:var(--font-head);margin:0;line-height:1.15}
 h2{font-size:21px;margin-bottom:12px}h3{font-size:16px;margin-bottom:8px}
-.wrap{max-width:1100px;margin:0 auto;display:grid;gap:16px}
-.top{background:var(--navy);color:#fff;border-radius:14px;padding:18px 22px;display:flex;flex-wrap:wrap;gap:10px 20px;align-items:center;justify-content:space-between;border-left:8px solid var(--amber)}
-.top h1{font-size:24px}.top small{opacity:.8}
-.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:clamp(14px,3vw,24px);min-width:0}
+:focus-visible{outline:3px solid var(--amber)!important;outline-offset:3px}
+.wrap{width:100%;max-width:1200px;margin:0 auto;display:grid;grid-template-columns:minmax(0,1fr);gap:16px}
+.wrap>*{min-width:0;max-width:100%}
+.top{background:linear-gradient(120deg,var(--navy),#28477f);color:#fff;border-radius:20px;padding:20px 24px;display:flex;flex-wrap:wrap;gap:10px 20px;align-items:center;justify-content:space-between;border-left:8px solid var(--amber);box-shadow:var(--shadow2)}
+.top h1{font-size:clamp(22px,4vw,30px)}.top small{opacity:.86}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:clamp(14px,3vw,24px);min-width:0;box-shadow:var(--shadow1)}
 .muted{color:var(--muted)}
-textarea{font:14px var(--font-body);padding:10px 12px;border:1.5px solid var(--line);border-radius:10px;background:var(--bg);color:var(--fg);width:100%;resize:vertical}
+textarea{font:14px var(--font-body);padding:12px;border:1.5px solid var(--line);border-radius:10px;background:var(--bg);color:var(--fg);width:100%;resize:vertical}
 input,select{font:15px var(--font-body);padding:10px 12px;border:1.5px solid var(--line);border-radius:10px;background:var(--bg);color:var(--fg);min-width:0}
-input:focus-visible,select:focus-visible,button:focus-visible,tr[data-id]:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
-.btn{font:700 14px var(--font-body);padding:10px 16px;border-radius:10px;border:1.5px solid var(--amber);background:var(--amber);color:var(--amber-ink);cursor:pointer}
-.btn.sec{background:transparent;border-color:var(--line);color:var(--fg)}
-.btn.danger{background:transparent;border-color:var(--bad);color:var(--bad)}
+.btn{font:700 14px var(--font-body);padding:10px 16px;border-radius:10px;border:1.5px solid var(--amber);background:linear-gradient(135deg,#ffc04a,var(--amber));color:var(--amber-ink);cursor:pointer;transition:transform var(--motion),box-shadow var(--motion)}
+.btn:hover{box-shadow:var(--shadow2);transform:translateY(-1px)}.btn:active{transform:translateY(1px)}
+.btn.sec{background:transparent;border-color:var(--line);color:var(--fg)}.btn.danger{background:transparent;border-color:var(--bad);color:var(--bad)}
 .row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
 .err{color:var(--bad);font-weight:600;min-height:1.4em;margin:8px 0 0}
-.kpis{display:flex;flex-wrap:wrap;gap:12px 32px}
-.kpis b{display:block;font:700 28px/1.1 var(--font-head)}.kpis span{font-size:13px;color:var(--muted)}
-.tw{overflow-x:auto}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:12px}
+.metric{display:flex;align-items:center;gap:12px;padding:16px;border-radius:14px;background:var(--bg);border:1px solid var(--line)}
+.metric svg{width:36px;height:36px;flex:none;padding:7px;border-radius:11px;background:var(--metric-soft);color:var(--metric-color)}
+@media(prefers-color-scheme:dark){.metric svg{filter:brightness(1.7)}}
+.metric b{display:block;font:700 24px/1.1 var(--font-head);font-variant-numeric:tabular-nums}.metric span{font-size:12px;color:var(--muted)}
+.tw{display:block;width:100%;min-width:0;overflow-x:auto;max-width:100%;border-radius:10px}
 table{width:100%;border-collapse:collapse;font-size:14px;font-variant-numeric:tabular-nums}
-th{text-align:left;font:600 11px var(--font-body);letter-spacing:.07em;text-transform:uppercase;color:var(--muted);padding:8px 10px;border-bottom:1.5px solid var(--line);white-space:nowrap;cursor:pointer;user-select:none}
-td{padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:middle}
+th{text-align:left;font:600 11px var(--font-body);letter-spacing:.07em;text-transform:uppercase;color:var(--muted);padding:10px;border-bottom:1.5px solid var(--line);white-space:nowrap;cursor:pointer;user-select:none;background:var(--surface);position:sticky;top:0;z-index:1}
+td{padding:10px;border-bottom:1px solid var(--line);vertical-align:middle}
+tbody tr:nth-child(even){background:color-mix(in srgb,var(--bg) 58%,var(--surface))}
 .num{text-align:right}
-tr[data-id]{cursor:pointer}tr[data-id]:hover td{background:var(--bg)}
-.meter{height:9px;background:var(--line);border-radius:5px;overflow:hidden;min-width:80px}
-.meter i{display:block;height:100%;background:var(--blue)}.meter.fis i{background:var(--teal)}.meter.low i{background:var(--bad)}
-.flag{color:var(--amber-text);font-weight:600}
+tr[data-id]{cursor:pointer}tr[data-id]:hover td{background:var(--amber-soft)}
+.meter{height:9px;background:var(--line);border-radius:99px;overflow:hidden;min-width:80px}
+.meter i{display:block;height:100%;background:var(--blue);transition:width 500ms ease}.meter.fis i{background:var(--teal)}.meter.low i{background:var(--bad)}
+.flag{font-weight:600;font-size:12px}.badge{display:inline-flex;padding:3px 8px;margin:2px;border-radius:99px;background:var(--amber-soft);color:var(--amber-text);white-space:nowrap}
+.score-cell{font-weight:700}.score-high{color:var(--ok)}.score-mid{color:var(--amber-text)}.score-low{color:var(--bad)}
 .rv{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:6px}
-.ri{padding:7px 10px;border-radius:8px;font-size:13px;border:1px solid var(--line)}
-.ri.ok{background:var(--ok-soft)}.ri.bad{background:var(--bad-soft)}.ri.bl{background:var(--amber-soft)}
-.detail{border:2px solid var(--amber)}
-.pill{display:inline-block;background:var(--bad-soft);color:var(--bad);border-radius:99px;padding:2px 10px;font-size:12px;font-weight:600;margin:2px 4px 2px 0}
-#login{max-width:420px;margin:60px auto}
+.ri{padding:8px 10px;border-radius:10px;font-size:13px;border:1px solid var(--line)}
+.ri.ok{background:var(--ok-soft);color:var(--ok)}.ri.bad{background:var(--bad-soft);color:var(--bad)}.ri.bl{background:var(--amber-soft);color:var(--amber-text)}
+.pill{display:inline-block;background:var(--bad-soft);color:var(--bad);border-radius:99px;padding:4px 10px;font-size:12px;font-weight:600;margin:2px 4px 2px 0}
+#login{max-width:440px;margin:60px auto}#login .btn{white-space:nowrap}
+.tabs{position:relative;display:grid;grid-template-columns:1fr 1fr;padding:5px;border-radius:14px;background:var(--line);overflow:hidden}
+.tab-indicator{position:absolute;top:5px;bottom:5px;left:5px;width:calc(50% - 5px);border-radius:10px;background:var(--surface);box-shadow:var(--shadow1);transition:transform 220ms ease}
+.tabs[data-active="receipts"] .tab-indicator{transform:translateX(100%)}
+.tab{position:relative;z-index:1;border:0;background:transparent;color:var(--muted);font:600 14px var(--font-body);padding:11px;cursor:pointer}
+.tab[aria-selected="true"]{color:var(--fg)}
+.drop{border:2px dashed var(--line);border-radius:14px;padding:18px;text-align:center;background:var(--bg);transition:border-color var(--motion),background var(--motion)}
+.drop.drag{border-color:var(--amber);background:var(--amber-soft)}
+.drop p{margin:0 0 10px}
+#files{display:block;width:100%;max-width:100%;min-width:0}
+.receipt-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,260px),1fr));gap:12px;margin-top:16px}
+.receipt-card{border:1px solid var(--line);border-radius:14px;padding:16px;background:var(--surface);box-shadow:var(--shadow1)}
+.receipt-card h3{margin:0 0 4px}.receipt-card .grade{font:700 26px var(--font-head);margin:12px 0;color:var(--blue)}
+.empty{text-align:center;padding:32px 16px;color:var(--muted);min-width:0}.empty svg{width:72px;height:60px;color:var(--blue);opacity:.7}.empty p{margin:8px 0 0;overflow-wrap:anywhere}
+.skeleton{height:18px;margin:9px 0;border-radius:8px;background:linear-gradient(90deg,var(--line),var(--bg),var(--line));background-size:200% 100%;animation:shimmer 1.2s infinite}
+@keyframes shimmer{to{background-position:-200% 0}}
+.drawer-backdrop{position:fixed;inset:0;z-index:20;background:#09152c77;display:flex;justify-content:flex-end}
+.drawer{width:min(720px,92vw);height:100%;overflow:auto;background:var(--bg);padding:20px;box-shadow:var(--shadow3);animation:slidein 220ms ease}
+@keyframes slidein{from{transform:translateX(30px);opacity:.7}to{transform:none;opacity:1}}
+.toast{position:fixed;bottom:20px;left:50%;z-index:30;transform:translate(-50%,20px);opacity:0;pointer-events:none;background:var(--navy);color:#fff;padding:10px 16px;border-radius:99px;box-shadow:var(--shadow2);transition:all var(--motion)}
+.toast.show{transform:translate(-50%,0);opacity:1}.toast.error{background:var(--bad);color:#fff}
 [hidden]{display:none!important}
+@media(max-width:600px){body{padding:8px 10px 28px}.wrap,#panel,#respondedPane,#receiptsPane,.top,.card,.row{min-width:0;max-width:100%}.top{padding:16px;border-radius:14px}.top .row{width:100%}.top .row small{flex:1 1 100%}.top .row button{flex:1 1 0;min-width:0}.tabs{position:sticky;top:6px;z-index:5}.drawer-backdrop{display:block}.drawer{width:100%;padding:14px;height:100dvh;border-radius:0}.row>select,.row>input[type=search]{flex:1 1 100%;width:100%}td,th{padding:8px}.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
 </style>
 </head>
 <body>
@@ -65,28 +92,54 @@ tr[data-id]{cursor:pointer}tr[data-id]:hover td{background:var(--bg)}
     </div>
     <div class="card" id="dbwarn" hidden style="border-color:var(--bad)"><b style="color:var(--bad)">O banco de dados não está respondendo.</b> Os envios feitos pelo site não aparecem aqui. Abra <a href="/api/health" target="_blank">/api/health</a> para ver o que falta. Enquanto isso, use os comprovantes dos alunos abaixo.</div>
     <div class="card" id="summary"></div>
-    <div class="card"><h2>Comprovantes recebidos dos alunos</h2><p class="muted">Se algum aluno não conseguiu enviar pelo site, cole aqui o comprovante dele (pode colar a conversa inteira do WhatsApp, ou o texto copiado do PDF) ou carregue os arquivos .txt. O sistema corrige com o gabarito oficial e inclui o aluno na lista abaixo.</p><textarea id="paste" rows="5" placeholder="Cole aqui os comprovantes…"></textarea><div class="row" style="margin-top:8px"><input type="file" id="files" multiple accept=".txt,text/plain"><span class="muted" id="impinfo"></span></div></div>
-    <div class="card">
-      <div class="row" style="margin-bottom:12px"><h2 style="margin:0;margin-right:auto">Alunos</h2>
-        <select id="fturma"><option value="">Todas as turmas</option></select>
-        <input type="search" id="fnome" placeholder="Buscar aluno">
-        <button class="btn" id="csv">Baixar planilha (CSV)</button></div>
-      <div class="tw"><table><thead><tr>
-        <th data-s="pos" class="num">#</th><th data-s="nome">Aluno</th><th data-s="turma">Turma</th><th data-s="total" class="num">Total</th><th data-s="mat" class="num">Mat.</th><th data-s="fis" class="num">Fís.</th><th data-s="pct" class="num">%</th><th data-s="at">Enviado em</th><th>Obs.</th></tr></thead>
-        <tbody id="rows"></tbody></table></div>
-      <p class="muted" style="margin:10px 0 0;font-size:13px">Clique em um aluno para ver a análise detalhada. Clique no título da coluna para ordenar.</p>
+    <div class="tabs" id="tabs" data-active="responded" role="tablist" aria-label="Painel do professor">
+      <span class="tab-indicator" aria-hidden="true"></span>
+      <button class="tab" id="tab-responded" role="tab" aria-selected="true" aria-controls="respondedPane" data-tab="responded">Quem respondeu</button>
+      <button class="tab" id="tab-receipts" role="tab" aria-selected="false" aria-controls="receiptsPane" data-tab="receipts">Ler comprovantes</button>
     </div>
-    <div class="card detail" id="detail" hidden></div>
-    <div class="card" id="qstats"></div>
-    <div class="card" id="tstats"></div>
+    <section id="respondedPane" role="tabpanel" aria-labelledby="tab-responded">
+      <div class="card">
+        <div class="row" style="margin-bottom:12px"><h2 style="margin:0;margin-right:auto">Alunos</h2>
+          <select id="fturma"><option value="">Todas as turmas</option></select>
+          <input type="search" id="fnome" placeholder="Buscar aluno">
+          <button class="btn" id="csv">Baixar planilha (CSV)</button></div>
+        <div class="tw"><table><thead><tr>
+          <th data-s="pos" class="num">#</th><th data-s="nome">Aluno</th><th data-s="turma">Turma</th><th data-s="total" class="num">Total</th><th data-s="mat" class="num">Mat.</th><th data-s="fis" class="num">Fís.</th><th data-s="pct" class="num">%</th><th data-s="at">Enviado em</th><th>Obs.</th></tr></thead>
+          <tbody id="rows"></tbody></table></div>
+        <p class="muted" style="margin:10px 0 0;font-size:13px">Clique em um aluno para ver a análise detalhada. Clique no título da coluna para ordenar.</p>
+      </div>
+      <div class="card" id="qstats"></div>
+      <div class="card" id="tstats"></div>
+    </section>
+    <section id="receiptsPane" role="tabpanel" aria-labelledby="tab-receipts" hidden>
+      <div class="card">
+        <h2>Comprovantes recebidos dos alunos</h2>
+        <p class="muted">Cole o texto do comprovante ou carregue vários arquivos PDF e .txt. O gabarito continua protegido no servidor; apenas o resultado corrigido é exibido aqui.</p>
+        <textarea id="paste" rows="5" placeholder="Cole aqui um ou mais comprovantes…"></textarea>
+        <div class="drop" id="dropzone" style="margin-top:12px">
+          <p><b>Solte aqui os PDFs ou .txt dos alunos</b></p>
+          <input type="file" id="files" multiple accept=".pdf,.txt,text/plain,application/pdf">
+        </div>
+        <p class="muted" id="file-status" aria-live="polite"></p>
+        <p class="muted" id="impinfo" aria-live="polite"></p>
+      </div>
+      <div class="card">
+        <h2>Comprovantes lidos</h2>
+        <div id="receipt-cards"></div>
+      </div>
+    </section>
+    <div class="drawer-backdrop" id="drawer-backdrop" hidden><aside class="drawer" id="detail" role="dialog" aria-modal="true" aria-label="Análise do aluno"></aside></div>
   </div>
 </div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <script>
 (function(){
 "use strict";
 var OPEN=Date.UTC(2026,10,14,15,0,0),CLOSE=Date.UTC(2026,10,15,1,0,0);
-var pw=null,DATA=null,SRV=[],IMP=[],impT=null,sortKey="total",sortDir=-1,sel=null,timer=null;
+var pw=null,DATA=null,SRV=[],IMP=[],impT=null,sortKey="total",sortDir=-1,sel=null,selRecord=null,timer=null,toastT=null;
+if(window.pdfjsLib)pdfjsLib.GlobalWorkerOptions.workerSrc="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
 function $(s){return document.querySelector(s)}
 function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
 function pad(n){return (n<10?"0":"")+n}
@@ -97,44 +150,94 @@ function api(method,qs){
   return fetch("/api/results"+(qs||""),{method:method||"GET",headers:{"x-prof-password":pw}}).then(function(r){
     return r.json().then(function(j){if(!r.ok){var e=new Error(j.error||"Erro");e.status=r.status;throw e}return j})});
 }
+function toast(text,isError){
+  var el=$("#toast");el.textContent=text;el.classList.toggle("error",!!isError);el.classList.add("show");
+  clearTimeout(toastT);toastT=setTimeout(function(){el.classList.remove("show")},2600);
+}
+function setTab(tab){
+  $("#tabs").setAttribute("data-active",tab);
+  $("#tab-responded").setAttribute("aria-selected",tab==="responded"?"true":"false");
+  $("#tab-receipts").setAttribute("aria-selected",tab==="receipts"?"true":"false");
+  $("#respondedPane").hidden=tab!=="responded";$("#receiptsPane").hidden=tab!=="receipts";
+}
+$("#tabs").addEventListener("click",function(e){var b=e.target.closest("[data-tab]");if(b)setTab(b.getAttribute("data-tab"))});
 
 $("#lf").addEventListener("submit",function(e){
   e.preventDefault();pw=$("#pw").value;$("#lerr").textContent="";
   load(true);
 });
 function load(first){
+  if(first){$("#rows").innerHTML='<tr><td colspan="9"><div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div></td></tr>'}
   api().then(function(j){
-    DATA=j;SRV=j.subs;merge();if(first){try{sessionStorage.setItem("pp",pw)}catch(e){}}
+    DATA=j;SRV=j.subs;merge();$("#pw").value="";
     $("#dbwarn").hidden=!j.dbError;
     var firstShow=$("#panel").hidden;
     $("#login").hidden=true;$("#panel").hidden=false;render();
     if(firstShow){try{$("#paste").value=localStorage.getItem("simulado-prof-paste")||""}catch(e){}runImport()}
     if(!timer)timer=setInterval(function(){load(false)},30000);
   }).catch(function(e){
-    if(e.status===401||e.status===429||first){$("#login").hidden=false;$("#panel").hidden=true;$("#lerr").textContent=e.message;try{sessionStorage.removeItem("pp")}catch(x){}}
+    if(e.status===401||e.status===429||first){$("#login").hidden=false;$("#panel").hidden=true;$("#lerr").textContent=e.message;pw=null}
     else $("#upd").textContent="Falha ao atualizar";
   });
 }
 $("#refresh").addEventListener("click",function(){load(false)});
-$("#logout").addEventListener("click",function(){try{sessionStorage.removeItem("pp")}catch(e){}location.reload()});
-try{var sp=sessionStorage.getItem("pp");if(sp){pw=sp;load(true)}}catch(e){}
+$("#logout").addEventListener("click",function(){pw=null;location.reload()});
 
 function merge(){var ids={};SRV.forEach(function(s){ids[s.id]=1});DATA.subs=SRV.concat(IMP.filter(function(s){return !ids[s.id]}))}
+function normalizeReceiptText(text){
+  var count=0;
+  var normalized=String(text).replace(/\u00a0/g," ").replace(/S\s*E\s*1\s*\|\s*([^|]{1,120}?)\s*\|\s*([^|]{0,80}?)\s*\|\s*([-A-E\s]{60,180})\s*\|\s*(\d[\d\s]{8,20})\s*\|\s*([a-z0-9\s]{1,24})/gi,function(all,nome,turma,ans,at,checksum){
+    var answers=ans.replace(/\s+/g,""),timestamp=at.replace(/\s+/g,""),sig=checksum.replace(/\s+/g,"").toLowerCase();
+    if(!/^[-A-E]{60}$/.test(answers)||! /^\d{9,11}$/.test(timestamp)||!/^[a-z0-9]{1,8}$/.test(sig))return all;
+    count++;
+    return "SE1|"+nome.replace(/\s+/g," ").trim()+"|"+turma.replace(/\s+/g," ").trim()+"|"+answers+"|"+timestamp+"|"+sig;
+  });
+  return {text:normalized.replace(/[ \t]+\n/g,"\n").replace(/\n{3,}/g,"\n\n"),count:count};
+}
 function runImport(){
   var txt=$("#paste").value;try{localStorage.setItem("simulado-prof-paste",txt)}catch(e){}
-  if(!txt.trim()){IMP=[];$("#impinfo").textContent="";if(DATA){merge();render()}return}
+  if(!txt.trim()){IMP=[];$("#impinfo").textContent="";renderReceipts();if(DATA){merge();render()}return}
   fetch("/api/grade",{method:"POST",headers:{"x-prof-password":pw,"Content-Type":"application/json"},body:JSON.stringify({text:txt})})
    .then(function(r){return r.json().then(function(j){return {ok:r.ok,j:j}})})
    .then(function(x){if(!x.ok)throw new Error(x.j.error||"Erro");IMP=x.j.subs.map(function(s){s.imp=1;return s});
      $("#impinfo").textContent=x.j.subs.length+" comprovante(s) válido(s)"+(x.j.ignored?" · "+x.j.ignored+" ignorado(s)":"");if(DATA){merge();render()}})
-   .catch(function(e){$("#impinfo").textContent=e.message});
+   .catch(function(e){$("#impinfo").textContent=e.message;toast(e.message,true)});
 }
 $("#paste").addEventListener("input",function(){clearTimeout(impT);impT=setTimeout(runImport,600)});
-$("#files").addEventListener("change",function(){
-  var fs=Array.prototype.slice.call(this.files),n=fs.length,acc="";if(!n)return;
-  fs.forEach(function(f){var r=new FileReader();r.onload=function(){acc+="\n"+r.result;if(--n===0){var ta=$("#paste");ta.value=(ta.value+acc).trim();runImport()}};r.readAsText(f)});
-  this.value="";
-});
+function fileText(file){return new Promise(function(resolve,reject){var reader=new FileReader();reader.onload=function(){resolve(String(reader.result||""))};reader.onerror=function(){reject(new Error("Não foi possível ler o arquivo."))};reader.readAsText(file)})}
+async function pdfText(file){
+  if(!window.pdfjsLib)throw new Error("O leitor de PDF não carregou. Verifique a conexão e tente novamente.");
+  var doc=await pdfjsLib.getDocument({data:await file.arrayBuffer()}).promise,pages=[];
+  for(var p=1;p<=doc.numPages;p++){var page=await doc.getPage(p),content=await page.getTextContent();pages.push(content.items.map(function(item){return item.str||""}).join(" "))}
+  return pages.join("\n");
+}
+async function readFiles(files){
+  if(!files.length)return;
+  setTab("receipts");var status=$("#file-status"),results=[];
+  var statusLines=Array.prototype.map.call(files,function(f){return "Lendo "+f.name+"…"});
+  status.textContent=statusLines.join("\n");
+  for(var i=0;i<files.length;i++){
+    var file=files[i];
+    try{
+      if(!/\.pdf$/i.test(file.name)&&!/\.txt$/i.test(file.name))throw new Error("Formato não suportado. Selecione um PDF ou .txt.");
+      var raw=/\.pdf$/i.test(file.name)?await pdfText(file):await fileText(file);
+      var parsed=normalizeReceiptText(raw);
+      results.push({file:file,parsed:parsed,error:parsed.count?"":"Nenhum código encontrado em "+file.name+", tente colar o texto"});
+    }catch(error){results.push({file:file,error:"Erro ao ler "+file.name+": "+(error.message||"arquivo inválido")})}
+    statusLines[i]=results[i].error||("Arquivo lido: "+file.name);
+    status.textContent=statusLines.join("\n");
+  }
+  var ta=$("#paste"),add=results.filter(function(r){return r.parsed}).map(function(r){return r.parsed.text});
+  if(add.length){ta.value=(ta.value+"\n"+add.join("\n")).trim();runImport()}
+  status.textContent=results.map(function(r){return r.error||("Arquivo lido: "+r.file.name)}).join("\n");
+  if(results.some(function(r){return !r.error}))toast("Arquivo lido");
+  if(results.some(function(r){return r.error}))toast(results.filter(function(r){return r.error}).map(function(r){return r.error}).join(" · "),true);
+}
+$("#files").addEventListener("change",function(){readFiles(Array.prototype.slice.call(this.files));this.value=""});
+var drop=$("#dropzone");
+drop.addEventListener("dragover",function(e){e.preventDefault();drop.classList.add("drag")});
+drop.addEventListener("dragleave",function(e){if(!drop.contains(e.relatedTarget))drop.classList.remove("drag")});
+drop.addEventListener("drop",function(e){e.preventDefault();drop.classList.remove("drag");readFiles(Array.prototype.slice.call(e.dataTransfer.files))});
 function rowsData(){
   var ft=$("#fturma").value,fn=$("#fnome").value.trim().toLowerCase();
   var r=DATA.subs.filter(function(s){return (!ft||s.turma===ft)&&(!fn||s.nome.toLowerCase().indexOf(fn)>=0)});
@@ -144,21 +247,49 @@ function rowsData(){
   r.sort(function(a,b){var x=a[sortKey],y=b[sortKey];if(typeof x==="string")return sortDir*x.localeCompare(y,"pt-BR");return sortDir*((x>y)-(x<y))||a.nome.localeCompare(b.nome,"pt-BR")});
   return r;
 }
+function emptyHTML(message){
+  return '<div class="empty"><svg viewBox="0 0 72 60" fill="none" aria-hidden="true"><path d="M10 12a5 5 0 0 1 5-5h42v40H15a5 5 0 0 0-5 5V12Z" stroke="currentColor" stroke-width="2.5"/><path d="M10 14v38h47M23 18h23M23 26h23M23 34h15" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg><p>'+esc(message)+'</p></div>';
+}
+function metricIcon(type){
+  var d=type==="people"?"M18 20a6 6 0 1 0 0-12 6 6 0 0 0 0 12ZM6 20a4 4 0 1 0 0-8m18 8a4 4 0 1 1 0-8M4 28c1-4 5-6 10-6m8 0c5 0 9 2 10 6M2 28v-2m30 2v-2":type==="math"?"M7 6h20v20H7zM12 12h2m8 0h-4m-6 4h2m4 0h4m-10 4h2m4 0h4":type==="physics"?"M17 3 8 18h8l-1 11 9-16h-8l1-10Z":"M6 25 14 17l5 4 10-12M23 9h6v6";
+  return '<svg viewBox="0 0 36 36" fill="none" aria-hidden="true"><path d="'+d+'" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+}
+function metric(value,label,type,color,soft){
+  return '<div class="metric" style="--metric-color:'+color+';--metric-soft:'+soft+'">'+metricIcon(type)+'<div><b>'+value+'</b><span>'+label+'</span></div></div>';
+}
+function renderReceipts(){
+  var list=$("#receipt-cards");
+  if(!IMP.length){list.innerHTML=emptyHTML("Os comprovantes corrigidos aparecerão aqui.");return}
+  list.innerHTML='<div class="receipt-list">'+IMP.map(function(s){
+    var pct=Math.round(s.total/60*100);
+    return '<article class="receipt-card"><h3>'+esc(s.nome)+'</h3><span class="muted">'+esc(s.turma)+'</span><div class="grade">'+s.total+'<small> / 60 · '+pct+'%</small></div><div class="row"><button class="btn" type="button" data-detail="'+esc(s.id)+'">Ver acertos e erros</button><button class="btn sec" type="button" data-copy="'+esc(s.id)+'">Copiar código</button></div></article>';
+  }).join("")+'</div>';
+}
 function render(){
   var subs=DATA.subs,n=subs.length;
   $("#upd").textContent="Atualizado às "+pad(new Date().getHours())+":"+pad(new Date().getMinutes());
+  renderReceipts();
   // turmas
   var cur=$("#fturma").value,ts=[];subs.forEach(function(s){if(ts.indexOf(s.turma)<0)ts.push(s.turma)});ts.sort();
   $("#fturma").innerHTML='<option value="">Todas as turmas</option>'+ts.map(function(t){return '<option'+(t===cur?" selected":"")+'>'+esc(t)+'</option>'}).join("");
-  if(!n){$("#summary").innerHTML='<h2>Resultado da turma</h2><p class="muted">Nenhuma prova enviada ainda. Esta página atualiza sozinha a cada 30 segundos.</p>';$("#rows").innerHTML="";$("#detail").hidden=true;$("#qstats").innerHTML="";$("#tstats").innerHTML="";return}
+  if(!n){$("#summary").innerHTML='<h2>Resumo da turma</h2>'+emptyHTML("Ainda não há provas enviadas. Os resultados aparecerão aqui assim que os alunos responderem.")+'<p class="muted">Esta página atualiza sozinha a cada 30 segundos.</p>';$("#rows").innerHTML="";$("#detail").hidden=true;$("#drawer-backdrop").hidden=true;$("#qstats").innerHTML="";$("#tstats").innerHTML="";return}
   var sum=function(f){return subs.reduce(function(a,s){return a+f(s)},0)};
   var best=Math.max.apply(null,subs.map(function(s){return s.total})),worst=Math.min.apply(null,subs.map(function(s){return s.total}));
-  $("#summary").innerHTML='<h2>Resultado da turma</h2><div class="kpis"><div><b>'+n+'</b><span>provas enviadas</span></div><div><b>'+dec(sum(function(s){return s.total})/n)+'</b><span>média geral (de 60)</span></div><div><b>'+dec(sum(function(s){return s.mat})/n)+'</b><span>média Matemática (de 45)</span></div><div><b>'+dec(sum(function(s){return s.fis})/n)+'</b><span>média Física (de 15)</span></div><div><b>'+best+' / '+worst+'</b><span>maior / menor nota</span></div></div>';
+  var avg=sum(function(s){return s.total})/n,avgMat=sum(function(s){return s.mat})/n,avgFis=sum(function(s){return s.fis})/n;
+  $("#summary").innerHTML='<h2>Resumo da turma</h2><div class="kpis">'
+   +metric(n,"provas enviadas","people","#2b4a94","#e8eefc")
+   +metric(dec(avg)+"/60","média geral","score","#15703a","#dcf4e3")
+   +metric(dec(avgMat)+"/45","média Matemática","math","#2b4a94","#e8eefc")
+   +metric(dec(avgFis)+"/15","média Física","physics","#0f766e","#dcf1ee")
+   +metric(best+"/60","maior nota","score","#15703a","#dcf4e3")
+   +metric(worst+"/60","menor nota","score","#b3261e","#fde7e4")+'</div>';
   // tabela
   var r=rowsData();
   $("#rows").innerHTML=r.map(function(s){
-    var fl=[];if(s.at>CLOSE+60000)fl.push("enviada após 22h");if(s.auto)fl.push("envio automático");if(s.imp)fl.push("via comprovante");if(s.bad)fl.push("código alterado");
-    return '<tr data-id="'+s.id+'" tabindex="0"><td class="num">'+s.pos+'</td><td>'+esc(s.nome)+'</td><td>'+esc(s.turma)+'</td><td class="num"><b>'+s.total+'</b></td><td class="num">'+s.mat+'</td><td class="num">'+s.fis+'</td><td class="num">'+s.pct+'%</td><td>'+fmt(s.at)+'</td><td class="flag">'+fl.join("; ")+'</td></tr>'}).join("");
+    var fl=[];if(s.at>CLOSE+60000)fl.push('<span class="badge">após 22h</span>');if(s.auto)fl.push('<span class="badge">envio automático</span>');if(s.imp)fl.push('<span class="badge">via comprovante</span>');if(s.bad)fl.push('<span class="badge">código alterado</span>');
+    var scoreClass=s.pct>=70?"score-high":s.pct>=40?"score-mid":"score-low";
+    return '<tr data-id="'+s.id+'" tabindex="0"><td class="num">'+s.pos+'</td><td>'+esc(s.nome)+'</td><td>'+esc(s.turma)+'</td><td class="num score-cell '+scoreClass+'"><b>'+s.total+'</b></td><td class="num">'+s.mat+'</td><td class="num">'+s.fis+'</td><td class="num '+scoreClass+'">'+s.pct+'%</td><td>'+fmt(s.at)+'</td><td class="flag">'+fl.join("")+'</td></tr>'}).join("");
+  if(!r.length)$("#rows").innerHTML='<tr><td colspan="9">'+emptyHTML("Nenhum aluno corresponde aos filtros selecionados.")+'</td></tr>';
   // questões
   var cnt=[];for(var i=0;i<60;i++)cnt.push(0);
   subs.forEach(function(s){for(var i=0;i<60;i++)if(s.ans.charAt(i)===DATA.meta.key.charAt(i))cnt[i]++});
@@ -173,12 +304,12 @@ function render(){
   $("#tstats").innerHTML='<h2>Acertos por tema (média da turma)</h2><div class="tw"><table><thead><tr><th>Tema</th><th class="num">Acerto</th><th></th></tr></thead><tbody>'+keys.map(function(k,i){
     var tot=subs[0].tema[k][1],hits=sum(function(s){return s.tema[k][0]});
     return '<tr><td>'+(i<10?"Mat · ":"Fís · ")+DATA.meta.temas[k]+'</td><td class="num">'+Math.round(hits/(n*tot)*100)+'%</td><td>'+meter(hits,n*tot,i>=10)+'</td></tr>'}).join("")+'</tbody></table></div>';
-  if(sel)showDetail(sel,true);
+  if(sel)showDetail(sel,true,selRecord);
 }
-function showDetail(id,keep){
-  var s=DATA.subs.filter(function(x){return x.id===id})[0],el=$("#detail");
-  if(!s){el.hidden=true;sel=null;return}
-  sel=id;var key=DATA.meta.key,keys=Object.keys(DATA.meta.temas),n=DATA.subs.length;
+function showDetail(id,keep,source){
+  var s=source||DATA.subs.filter(function(x){return x.id===id})[0],el=$("#detail");
+  if(!s){el.hidden=true;$("#drawer-backdrop").hidden=true;sel=null;selRecord=null;return}
+  sel=id;selRecord=s;var key=DATA.meta.key,keys=Object.keys(DATA.meta.temas),n=DATA.subs.length;
   var branco=0;for(var i=0;i<60;i++)if(s.ans.charAt(i)==="-")branco++;
   var tempo=s.started?Math.round((s.at-s.started)/60000):null;
   var fracos=keys.filter(function(k){return s.tema[k][0]/s.tema[k][1]<0.5}).map(function(k){return '<span class="pill">'+DATA.meta.temas[k]+' ('+s.tema[k][0]+'/'+s.tema[k][1]+')</span>'}).join("");
@@ -190,21 +321,40 @@ function showDetail(id,keep){
    +'<h3 style="margin-top:14px">Questão por questão</h3><div class="rv">'+s.ans.split("").map(function(m,i){var c=key.charAt(i),cls,t;
       if(m===c){cls="ok";t="marcou "+m+" ✓"}else if(m==="-"){cls="bl";t="branco · correta "+c}else{cls="bad";t="marcou "+m+" ✗ · correta "+c}
       return '<div class="ri '+cls+'" title="'+esc(DATA.meta.temas[DATA.meta.temaQ[i]])+'"><b>'+pad(i+1)+'</b> '+t+'</div>'}).join("")+'</div>';
-  el.innerHTML=h;el.hidden=false;
-  $("#close").onclick=function(){sel=null;el.hidden=true};
+  el.innerHTML=h;el.hidden=false;$("#drawer-backdrop").hidden=false;
+  $("#close").onclick=function(){sel=null;selRecord=null;el.hidden=true;$("#drawer-backdrop").hidden=true};
   if($("#del"))$("#del").onclick=function(){
     if(!confirm("Apagar o envio de "+s.nome+"? O aluno poderá refazer e reenviar a prova."))return;
-    api("DELETE","?id="+s.id).then(function(){sel=null;el.hidden=true;load(false)}).catch(function(e){alert(e.message)});
+    api("DELETE","?id="+s.id).then(function(){sel=null;selRecord=null;el.hidden=true;$("#drawer-backdrop").hidden=true;load(false)}).catch(function(e){toast(e.message,true)});
   };
-  if(!keep)el.scrollIntoView({behavior:"smooth",block:"start"});
+  if(!keep)$("#close").focus();
+}
+function receiptSig(s){var h=0x811c9dc5,x=s+"|enem3a";for(var i=0;i<x.length;i++){h^=x.charCodeAt(i);h=Math.imul(h,0x01000193)>>>0}return h.toString(36)}
+function copyReceipt(id){
+  var s=IMP.filter(function(x){return x.id===id})[0];if(!s)return;
+  var base=["SE1",s.nome,s.turma,s.ans,Math.floor(s.at/1000)].join("|"),text=base+"|"+receiptSig(base);
+  if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(text).then(function(){toast("Copiado")}).catch(function(){toast("Não foi possível copiar o código.",true)});
+  else{var temp=document.createElement("textarea");temp.value=text;document.body.appendChild(temp);temp.select();var ok=document.execCommand("copy");temp.remove();toast(ok?"Copiado":"Não foi possível copiar o código.",!ok)}
 }
 $("#rows").addEventListener("click",function(e){var tr=e.target.closest("tr[data-id]");if(tr)showDetail(tr.getAttribute("data-id"))});
 $("#rows").addEventListener("keydown",function(e){if(e.key==="Enter"){var tr=e.target.closest("tr[data-id]");if(tr)showDetail(tr.getAttribute("data-id"))}});
+$("#receipt-cards").addEventListener("click",function(e){
+  var detail=e.target.closest("[data-detail]"),copy=e.target.closest("[data-copy]");
+  if(detail){var id=detail.getAttribute("data-detail"),receipt=IMP.filter(function(s){return s.id===id})[0];showDetail(id,false,receipt)}
+  if(copy)copyReceipt(copy.getAttribute("data-copy"));
+});
+$("#drawer-backdrop").addEventListener("click",function(e){if(e.target.id==="drawer-backdrop"){$("#detail").hidden=true;this.hidden=true;sel=null;selRecord=null}});
+document.addEventListener("keydown",function(e){if(e.key==="Escape"&&!$("#drawer-backdrop").hidden){$("#detail").hidden=true;$("#drawer-backdrop").hidden=true;sel=null;selRecord=null}});
 document.querySelector("thead").addEventListener("click",function(e){var th=e.target.closest("th[data-s]");if(!th)return;var k=th.getAttribute("data-s");if(sortKey===k)sortDir=-sortDir;else{sortKey=k;sortDir=(k==="nome"||k==="turma"||k==="pos")?1:-1}render()});
 $("#fturma").addEventListener("change",render);$("#fnome").addEventListener("input",render);
+function csvCell(value){
+  var text=String(value);
+  if(/^[\s\uFEFF]*[=+\-@]/.test(text))text="'"+text;
+  return '"'+text.replace(/"/g,'""')+'"';
+}
 $("#csv").addEventListener("click",function(){
   var r=rowsData(),lines=["Posição;Nome;Turma;Total (de 60);Matemática (de 45);Física (de 15);% acertos;Enviado em"];
-  r.forEach(function(s){lines.push([s.pos,s.nome,s.turma,s.total,s.mat,s.fis,s.pct+"%",fmt(s.at)].map(function(v){return '"'+String(v).replace(/"/g,'""')+'"'}).join(";"))});
+  r.forEach(function(s){lines.push([s.pos,s.nome,s.turma,s.total,s.mat,s.fis,s.pct+"%",fmt(s.at)].map(csvCell).join(";"))});
   var b=new Blob(["﻿"+lines.join("\n")],{type:"text/csv;charset=utf-8"}),a=document.createElement("a");
   a.href=URL.createObjectURL(b);a.download="resultados-simulado-enem.csv";document.body.appendChild(a);a.click();a.remove();
 });
